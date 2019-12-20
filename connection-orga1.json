@@ -1,0 +1,50 @@
+{
+    "name": "trappiste-hunter-orga1",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Orga1",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Orga1": {
+            "mspid": "Orga1MSP",
+            "peers": [
+                "peer0.orga1.trappiste-hunter.com"
+            ],
+            "certificateAuthorities": [
+                "ca.orga1.trappiste-hunter.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.orga1.trappiste-hunter.com": {
+            "url": "grpcs://localhost:7051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICgDCCAiegAwIBAgIQdKWranKtsBsA6BICoYNXGDAKBggqhkjOPQQDAjCBijEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xIzAhBgNVBAoTGm9yZ2ExLnRyYXBwaXN0ZS1odW50ZXIuY29tMSkw\nJwYDVQQDEyB0bHNjYS5vcmdhMS50cmFwcGlzdGUtaHVudGVyLmNvbTAeFw0xOTEy\nMTQxNzE0MDBaFw0yOTEyMTExNzE0MDBaMIGKMQswCQYDVQQGEwJVUzETMBEGA1UE\nCBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEjMCEGA1UEChMa\nb3JnYTEudHJhcHBpc3RlLWh1bnRlci5jb20xKTAnBgNVBAMTIHRsc2NhLm9yZ2Ex\nLnRyYXBwaXN0ZS1odW50ZXIuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE\nfZyCQhVQyPedKSbhuazR/4RyLvypX/z8T8ww9cHRFyVM65Qdl+bUmdz0Hqky3Uta\nKn7/ouxoNoX2pSwLAnjtbqNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQWMBQG\nCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQiBCBS\n0rnApMybamFGk4Rp+0Elf3o258+QLKHJoB3E06YLbjAKBggqhkjOPQQDAgNHADBE\nAiACy2B7X5lhjcRek4nS6Ov+7W8u9H5L7Q5lJTWN+Pk4dwIgGCycJPK2WNU/9l5Z\nlKDJ3inul+jeYtjFzkDO9BimUko=\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.orga1.trappiste-hunter.com",
+                "hostnameOverride": "peer0.orga1.trappiste-hunter.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.orga1.trappiste-hunter.com": {
+            "url": "https://localhost:7054",
+            "caName": "ca0_orga1",
+            "tlsCACerts": { 
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICfDCCAiKgAwIBAgIRAI8VPEImTIOrPaoO662rv7QwCgYIKoZIzj0EAwIwgYcx\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMSMwIQYDVQQKExpvcmdhMS50cmFwcGlzdGUtaHVudGVyLmNvbTEm\nMCQGA1UEAxMdY2Eub3JnYTEudHJhcHBpc3RlLWh1bnRlci5jb20wHhcNMTkxMjE0\nMTcxNDAwWhcNMjkxMjExMTcxNDAwWjCBhzELMAkGA1UEBhMCVVMxEzARBgNVBAgT\nCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xIzAhBgNVBAoTGm9y\nZ2ExLnRyYXBwaXN0ZS1odW50ZXIuY29tMSYwJAYDVQQDEx1jYS5vcmdhMS50cmFw\ncGlzdGUtaHVudGVyLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABHT+vzpI\nx3sQWoZ9bMAPfvWVYgP0eUqYlhCo+J2WZETosTheOt53CAvhlU9dz5BQJMVtZKse\nJFycNVHs/86VQ72jbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEF\nBQcDAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQglMC1Z+Ed\nBKEzzxwp7HhCFa5dYBCpEZSzYkP+NqeiJ8wwCgYIKoZIzj0EAwIDSAAwRQIhANuL\n/yh/z8ZtQYtuhWp7PZDa3heakpABVwrquURKoC+rAiBi3/fi3YQCYlBi1vd2ko1w\nhuKndNWyjPnBd1e19+OhqQ==\n-----END CERTIFICATE-----\n",
+                "_comment" : "Ceci est un commentaire le chemin du .pem ci-dessus: crypto-config/peerOrganizations/orga1.trap../ca/ca.orga....pem"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}
