@@ -1,36 +1,36 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="./index"><h1>Trappiste & Co.</h1></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <% if (role == 'vendeur') { %>
-            <li class="nav-item">
-              <a class="nav-link" href="./caisse">Caisse</a>
-            </li>
-          <% } %>
-          <% if (role == 'responsable') { %>
-            <li class="nav-item">
-              <a class="nav-link" href="./stock">Stock</a>
-            </li>
-            <li class="nav-item dropdown ">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Historique</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="./achat">Liste achats</a>
-                <a class="dropdown-item" href="./vente">Liste ventes</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Consigne</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="./consigne">Consignes</a>
-                <a class="dropdown-item" href="./reduction">Réductions</a>
-              </div>
-            </li>
-          <% } %>
-        </ul>
-      </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="./index"><h1>Trappiste & Co.</h1></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+        <a class="nav-link" href="./index">Accueil</a>
+        </li>
+        <% if (role == 'vendeur') { %>
+          <li class="nav-item">
+            <a class="nav-link" href="./caisse">Caisse</a>
+          </li>
+        <% } %>
+        <% if (role == 'responsable') { %>
+          <li class="nav-item ">
+            <a class="nav-link" href="./stock">Stock</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./vente">Vente</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Consigne</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="./reduction">Réductions</a>
+              <a class="dropdown-item" href="./retour">Retours</a>
+            </div>
+        </li>
+        <% } %>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>

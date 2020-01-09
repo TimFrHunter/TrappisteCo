@@ -81,6 +81,8 @@ func (tc *TrappisteContract) Invoke(stub shim.ChaincodeStubInterface) peer.Respo
 		return tc.listerConsigne(stub, args)
 	} else if function == "getLastKey" {
 		return tc.getLastKey(stub, args)
+	} else if function == "delete" {
+		return tc.delete(stub, args)
 	}
 	return shim.Error("Invalid Trappiste Contract function name.")
 }
@@ -262,6 +264,15 @@ func (tc *TrappisteContract) listerTicketReduction(stub shim.ChaincodeStubInterf
 /********************************************************
 	OTHER
 *********************************************************/
+func (tc *TrappisteContract) delete(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+	biereKey := args[0]
+	err := stub.DelState(biereKey)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	return shim.Success(nil)
+}
+
 func (tc *TrappisteContract) decrementerStock(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	var err error
 	var biereAsBytes []byte

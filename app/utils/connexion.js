@@ -9,7 +9,7 @@ submitForm = async (formData, session) => {
   }
   let username = formData.username
   try {
-    user = JSON.parse(await levelDB.get(username))
+    user = JSON.parse(await levelDB.userDB.get(username))
     if (user.pwd != formData.pwd) 
       return false
     createUserSession(username, session, user.role) 

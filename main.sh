@@ -33,23 +33,26 @@ function up () {
 
     docker ps
     cd app/
-    node server.js > /dev/null 2>&1 &
-    printf 'Server NodeJs has been started'
-    sleep 2
-    #!/bin/bash
-    if which xdg-open > /dev/null 
-        then
-        xdg-open http://localhost:3000 > /dev/null 2>&1
-    elif which gnome-open > /dev/null 
-        then
-        gnome-open http://localhost:3000 > /dev/null 2>&1
-    fi
+  
+    
+        node server.js > /dev/null 2>&1 &
+        printf 'Server NodeJs has been started'
+        sleep 2
+    
+        if which xdg-open > /dev/null 
+            then
+            xdg-open http://localhost:3000 > /dev/null 2>&1
+        elif which gnome-open > /dev/null 
+            then
+            gnome-open http://localhost:3000 > /dev/null 2>&1
+
     
     printf "\nIf you want start server manualy go in app folder and then node server.js not from another folder please\n"
     # printf "\n\nYour environment is ready, attention the ledger has no data now.\n"
     # printf "Now go try some nodeJs insert and query requests.\n"
     # printf "Go to web/ and use action.js Script\n"
     # printf "Go to test() function on bottom \n\n"
+    fi    
     
 }
 function down() {

@@ -6,6 +6,7 @@ const Contract = require(appPath +'/utils/hp/contract')
 const connexion = require(appPath +'/utils/connexion')
 const session = require('express-session')
 const bodyParser = require('body-parser');
+const levelDB = require(appPath + '/utils/levelDB');
 
 const viewsPath = appPath + '/views/pages/'
 const walletPath = appPath + '/wallet';
@@ -50,8 +51,8 @@ app.get(['/index', '/'], function (req, res) {
 })
 .get('/stock', async function (req, res) {
   role = req.session.role == undefined ? '' : req.session.role 
-  if(role != "responsable" ) 
-    return res.redirect('/')
+  // if(role != "responsable" ) 
+  //   return res.redirect('/')
   let bieresStock = await listerBieres("Biere","Biere~")
   res.render(viewsPath + 'stock', {'bieresStock' : bieresStock, "role" : role})
 })
@@ -73,6 +74,22 @@ app.get(['/index', '/'], function (req, res) {
   }else{
     return res.redirect('/')  
   }
+})
+.post('/add', (req, res) => {
+  let datas = req.body
+  let type = datas.type
+  let elements = datas.elements
+  global[type](...elements)
+  if(type == "incrementerStock")
+    levelDB.correspondanceDB.put(elements[3], elements[0]); //comportement a changer dans le futur
+  return res.sendStatus(200)
+})
+.post('/delete', (req, res) => {
+  let datas = req.body
+  let key = datas.key
+  let type = datas.type
+  global[type](key)
+  return res.sendStatus(200)
 })
 
 
@@ -104,3 +121,16 @@ listerTicketReduction = async (startRange, endRange) => {
   return res.length == 0 ? true : JSON.parse(Buffer.from(res)); 
 }
 
+incrementerStock = async (biereId, name, stock, codeBarre, consigne, prix) => {
+    contract = await Contract.getContract(walletPath, user, ccpPath, channelName, chaincodeName) //Global var
+    let res = await contract.submitTransaction("incrementerStock", biereId, name, stock, codeBarre, consigne, prix);
+    await contract.gateway.disconnect();
+    return res.length == 0 ? true : Buffer.from(res).toString();    
+}
+
+deleteByKey = async (key) => {
+  contract = await Contract.getContract(walletPath, user, ccpPath, channelName, chaincodeName) //Global var
+  let res = await contract.submitTransaction("delete",key);
+  await contract.gateway.disconnect();
+  return res.length == 0 ? true : Buffer.from(res).toString();    
+}

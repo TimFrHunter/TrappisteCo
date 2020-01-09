@@ -74,6 +74,12 @@ incrementerConsigne = async (consigneId, biereId, count) => {
     await contract.gateway.disconnect();
     return res.length == 0 ? true : Buffer.from(res).toString(); 
 }
+deleteByKey = async (key) => {
+    contract = await Contract.getContract(walletPath, user, ccpPath, channelName, chaincodeName) //Global var
+    let res = await contract.submitTransaction("delete",key);
+    await contract.gateway.disconnect();
+    return res.length == 0 ? true : Buffer.from(res).toString();    
+}
 
 
 /***********************************************************************
