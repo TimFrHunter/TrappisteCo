@@ -23,6 +23,7 @@ function up () {
     node app/exec/enrollAdmin.js
     node app/exec/registerUser.js
     node app/exec/appUsers.js
+    node app/exec/appStock.js
     
     docker exec cli bash -c " \
     printf '\n'

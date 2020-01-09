@@ -7,7 +7,7 @@ docker-compose  1.13.0
 Il faut installer les images dockers en executant :
 ./getDockerImages.sh
 
-Il faut aller dans ./web/ et faire un npm init
+Il faut aller dans ./app/ et faire un npm install
 
 Demarrer hyperledger environnement:
 ./main.sh up
