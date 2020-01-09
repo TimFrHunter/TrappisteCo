@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <title>Trappiste & Co.</title>
+</head>
+
+<%- include('../partials/menu') %> 
+
+
+
+
+<!-- Table -->
+<div class="card">
+  <h3 class="card-header text-center font-weight-bold text-uppercase py-4">État des stocks</h3>
+  <div class="card-body">
+    <div id="table" class="table-editable">
+      <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i
+            class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>
+      <table class="table table-bordered table-responsive-md table-striped text-center">
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-center">Identifiant</th>
+            <th class="text-center">Produit</th>
+            <th class="text-center">Quantité</th>
+            <th class="text-center">Code barre</th>
+            <th class="text-center">Consigne</th>
+            <th class="text-center">Prix</th>
+          </tr>
+        </thead>
+        <tbody>
+            
+            <% bieresStock.forEach(function(biere) { %>
+              <tr>
+                  <td class="pt-3-half" contenteditable="true"><%= biere.Record.id %></td>
+                  <td class="pt-3-half" contenteditable="true"><%= biere.Record.nom %></td>
+                  <td class="pt-3-half" contenteditable="true"><%= biere.Record.stock %></td>
+                  <td class="pt-3-half" contenteditable="true"><%= biere.Record.codebarre %></td>
+                  <td class="pt-3-half" contenteditable="true"><%= biere.Record.consigne %></td>
+                  <td class="pt-3-half" contenteditable="true"><%= biere.Record.prix %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

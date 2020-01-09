@@ -18,6 +18,7 @@ type Biere struct {
 	CodeBarre int     `json:"codebarre"`
 	Consigne  float32 `json:"consigne"` // prix de la consigne
 	Prix      float32 `json:"prix"`     // prix de la biere
+	//	IsLivrer  bool
 }
 
 type Vente struct {
