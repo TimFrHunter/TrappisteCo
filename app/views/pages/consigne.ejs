@@ -31,9 +31,9 @@
         <tbody>
           <% consignes.forEach(function(consigne) { %>
             <tr>
-              <td class="pt-3-half" contenteditable="true"><%= consigne.Record.id %></td>
-              <td class="pt-3-half" contenteditable="true"><%= consigne.Record.idbiere %></td>
-              <td class="pt-3-half" contenteditable="true"><%= consigne.Record.count %></td>
+              <td class="pt-3-half" contenteditable="false"><%= consigne.Record.id %></td>
+              <td class="pt-3-half" contenteditable="false"><%= consigne.Record.idbiere %></td>
+              <td class="pt-3-half" contenteditable="false"><%= consigne.Record.count %></td>
             </tr>
           <% }); %>
         </tbody>

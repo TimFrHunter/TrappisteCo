@@ -1,0 +1,147 @@
+
+
+  <!-- Table#tableCaisseConsigne -->
+  <div class="card" id="cardCaisseConsigne">
+    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Caisse Consigne</h3>
+    <div class="card-body">
+      <div id="table" class="table-editable">
+        <button type="button" class="btn btn-info add-new float-right mb-2"><i class="fa fa-plus"></i>Ajouter Article Consigné</button>
+        <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i
+              class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>
+              
+        <table id="tableCaisseConsigne" class="table table-bordered table-responsive-md table-striped text-center">
+          <thead class="thead-dark">
+            <tr>
+              <th class="text-center">Produit</th>
+              <th class="text-center">Code barre</th>
+              <th class="text-center">Prix Consigne €</th>
+              <th class="text-center">Quantité</th>
+              <th class="text-center">Total €</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+
+        <!-- Validation de commande -->
+      
+          <div style="height:70px">
+            <span  class="btn  ml-3" id="reduction" style="float:right;width:120px;background:#343a40;color:white;cursor:unset"  >Prix Total</span> 
+            <input type="text" id="totalPrix" value="0" class="form-control " style="float:right;width:100px" disabled=disabled>
+          </div>
+         
+         
+       <button id="validation" type="button" class="btn btn-dark btn-lg btn-block">Valider la commande</button>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <!-- Script d'Actions-->
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+      var actions = '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a> '+ 
+                    '<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>' +
+                    '<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>';
+    
+      // Fonctions du boutton ajouter ligne
+        $("#cardCaisseConsigne .add-new").click(function(){
+        $(this).attr("disabled", "disabled");
+        var index = $("table#tableCaisseConsigne tbody tr:last-child").index();
+            var row = '<tr>' +
+                '<td><input type="text" class="form-control" name="produit" id="produit" disabled=disabled></td>' +
+                '<td><input type="text" class="form-control" name="identifiant" id="identifiant"></td>' +
+                '<td><input type="text" class="form-control" name="prixunitaire" id="prixunitaire" disabled=disabled></td>' +
+                '<td><input type="text" class="form-control" name="quantite" id="quantite" value="1" ></td>' +
+                '<td><input type="text" class="form-control" name="total" id="total" disabled=disabled></td>' +
+                '<td>' + actions + '</td>' +
+                '</tr>';
+          $("table#tableCaisseConsigne").append(row);		
+        $("table#tableCaisseConsigne tbody tr").eq(index + 1).find(".edit").toggle();
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+      $(document).on("click", "#cardCaisseConsigne .add", function(){
+        var empty = false;
+        var input = $(this).parents("tr").find('input[type="text"]');
+            input.each(function(){
+              if(!$(this).val()){
+                $(this).addClass("error");
+                empty = false;
+              } else{
+                $(this).removeClass("error");
+              }
+        });
+        $(this).parents("tr").find(".error").first().focus();
+        if(!empty){
+          let barcode = $(this).parents("tr").find("td:nth-child(2) input").val()
+          let quantite = $(this).parents("tr").find("td:nth-child(4) input").val()
+         
+          let el = this
+          $.post("/getProductInfo", {'barcode' : barcode }, function( datas ) {
+            let infos = [datas.bieresStock[0].Record.nom,  datas.bieresStock[0].Record.codebarre, datas.bieresStock[0].Record.consigne, quantite, parseFloat(parseInt(quantite) * parseFloat(datas.bieresStock[0].Record.consigne)).toFixed(2) ]
+            
+            input.each(function(idx){
+              if(idx ==0){
+                $(this).parent("td").attr("biereid", datas.bieresStock[0].Record.id)
+                $(this).parent("td").attr("quantity", quantite)
+              }
+              $(this).parent("td").html(infos[idx]);
+            })
+            $(el).parents("tr").find(".add, .edit").toggle();
+            $(".add-new").removeAttr("disabled");
+            let total = 0;
+            $(el).parents("table#tableCaisseConsigne").find("tbody tr").each(function(){
+                total +=  parseFloat($(this).find("td:nth-child(5)").html())
+            })
+            $(document).find('#cardCaisseConsigne #totalPrix').val(total+ '€')
+          });
+        }		
+        });
+    
+        $(document).on("click", "#cardCaisseConsigne #reduction", () => {
+          let barcode = $(document).find("input#reductionBarcode").val()
+          $.post("/reduction", {'barcode' : barcode}, (reductionPrix) => { 
+            // A FAIRE
+                })
+        })
+        $(document).on("click", "#cardCaisseConsigne #validation", () => {
+          let keys = []
+          $(document).find("table#tableCaisseConsigne tbody tr").each(function()  {        
+            let $td = $(this).find("td:first-child")
+            keys.push([$td.attr('biereid'), $td.attr('quantity'), $(this).find("td:nth-child(3)").html()]) // le dernier c le prix consigne
+          })
+          console.log(keys)
+          $.post("/validationConsigne", {'commande' : keys}, () => {
+    
+          })
+          window.location.replace("/caisse")
+        })
+    
+      // Fonction d'édition
+      $(document).on("click", "#cardCaisseConsigne .edit", function(){		
+          $(this).parents("tr").find("td:not(:last-child)").each(function(idx){
+           
+            if(idx == 0 || idx == 2 || idx == 4 )
+              $(this).html('<input  type="text" class="form-control" disabled=disabled value="' + $(this).text() + '">');
+            else
+              $(this).html('<input  type="text" class="form-control" value="' + $(this).text() + '">');
+          });	
+    
+          $(this).closest("td").find(".add").css("display","inline")
+          $(this).closest("td").find(".edit").css("display","none")
+          
+          $(".add-new").attr("disabled", "disabled");
+        });
+    
+      // De suppression
+      $(document).on("click", "#cardCaisseConsigne .delete", function(){
+        $(document).find(".tooltip.fade.bs-tooltip-top.show, .tooltip.bs-tooltip-top.show").remove();
+        $(document).find(".tooltip.fade.bs-tooltip-top.show").remove();
+            $(this).parents("tr").remove();
+        $(".add-new").removeAttr("disabled");
+        });
+    });
+    </script>

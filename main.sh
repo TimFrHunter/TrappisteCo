@@ -22,8 +22,10 @@ function up () {
     
     node app/exec/enrollAdmin.js
     node app/exec/registerUser.js
+    # A refaire c pas propre si le temp..
     node app/exec/appUsers.js
     node app/exec/appStock.js
+    node app/exec/appTdr.js
     
     docker exec cli bash -c " \
     printf '\n'
@@ -37,7 +39,16 @@ function up () {
   
     
         node server.js > /dev/null 2>&1 &
-        printf 'Server NodeJs has been started'
+        printf 'Server NodeJs à demarrer\n'
+        printf "\nUtilisation:\n"
+        printf "Normalement votre navigateur s'ouvre, si c'est pas le cas go : http://localhost:3000\n"
+        printf "les identifiants de connexions: \n"
+        printf "responsable1 : pwd\n"
+        printf "vendeur1 : pwd\n\n"
+        printf "Conseil:\n"
+        printf "ouvrer deux navigateurs pour chaque utilisateur, ainsi vous pourrez aller chercher les codes barres que vous voulez utiliser directement avec le user responsable1\n"
+        printf "et avec le user vendeur1 ajouter les code barres à la caisse\n\n"
+       
         sleep 2
     
         if which xdg-open > /dev/null 
@@ -48,7 +59,7 @@ function up () {
             gnome-open http://localhost:3000 > /dev/null 2>&1
 
     
-    printf "\nIf you want start server manualy go in app folder and then node server.js not from another folder please\n"
+         
     # printf "\n\nYour environment is ready, attention the ledger has no data now.\n"
     # printf "Now go try some nodeJs insert and query requests.\n"
     # printf "Go to web/ and use action.js Script\n"

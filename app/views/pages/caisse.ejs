@@ -13,16 +13,16 @@
 
   <%- include('../partials/menu', {role : role }) %> 
 
-  <!-- Table -->
-<div class="card">
+  <!-- Table#tableCaisse -->
+<div class="card" id="cardCaisse">
     <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Caisse</h3>
     <div class="card-body">
       <div id="table" class="table-editable">
-        <button type="button" class="btn btn-info add-new float-right mb-2"><i class="fa fa-plus"></i>Ajouter ligne</button>
+        <button type="button" class="btn btn-info add-new float-right mb-2"><i class="fa fa-plus"></i>Ajouter Article</button>
         <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i
               class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>
               
-        <table class="table table-bordered table-responsive-md table-striped text-center">
+        <table id="tableCaisse" class="table table-bordered table-responsive-md table-striped text-center">
           <thead class="thead-dark">
             <tr>
               <th class="text-center">Produit</th>
@@ -40,12 +40,12 @@
         <!-- Validation de commande -->
       
           <div style="height:70px">
-            <span  class="btn  ml-3" id="reduction" style="float:right;width:115px;background:#343a40;color:white;cursor:unset" >Prix Total</span> 
-            <input type="text" id="totalPrix" value="" class="form-control " style="float:right;width:100px">
+            <span  class="btn  ml-3" id="reduction" style="float:right;width:120px;background:#343a40;color:white;cursor:unset" >Prix Total</span> 
+            <input type="text" id="totalPrix" value="0" class="form-control " style="float:right;width:100px" disabled=disabled>
           </div>
          
            <div style="height:50px">
-            <button type="button" class="btn btn-info mb-2 ml-3" id="reduction" style="float:right;width:115px" >Valider</button>
+            <button type="button" class="btn btn-info mb-2 ml-3" id="reduction" style="float:right;width:120px" >Valider</button>
             <input type="text" class="form-control" id="reductionBarcode" style="float:right;width:300px"  placeholder="code barre de réduction">
           </div>
 
@@ -54,8 +54,14 @@
     </div>
   </div>
 
+
+  <%- include('./caisseConsigne') %> 
+
+
+  
   <!-- Script d'Actions-->
 <script type="text/javascript">
+let reductionPrix = 0
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
   var actions = '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a> '+ 
@@ -63,9 +69,9 @@ $(document).ready(function(){
                 '<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>';
 
   // Fonctions du boutton ajouter ligne
-    $(".add-new").click(function(){
+    $("#cardCaisse .add-new").click(function(){
     $(this).attr("disabled", "disabled");
-    var index = $("table tbody tr:last-child").index();
+    var index = $("table#tableCaisse tbody tr:last-child").index();
         var row = '<tr>' +
             '<td><input type="text" class="form-control" name="produit" id="produit" disabled=disabled></td>' +
             '<td><input type="text" class="form-control" name="identifiant" id="identifiant"></td>' +
@@ -74,11 +80,11 @@ $(document).ready(function(){
             '<td><input type="text" class="form-control" name="total" id="total" disabled=disabled></td>' +
             '<td>' + actions + '</td>' +
             '</tr>';
-      $("table").append(row);		
-    $("table tbody tr").eq(index + 1).find(".edit").toggle();
+      $("table#tableCaisse").append(row);		
+    $("table#tableCaisse tbody tr").eq(index + 1).find(".edit").toggle();
         $('[data-toggle="tooltip"]').tooltip();
     });
-  $(document).on("click", ".add", function(){
+  $(document).on("click", "#cardCaisse .add", function(){
     var empty = false;
     var input = $(this).parents("tr").find('input[type="text"]');
         input.each(function(){
@@ -108,36 +114,47 @@ $(document).ready(function(){
         $(el).parents("tr").find(".add, .edit").toggle();
         $(".add-new").removeAttr("disabled");
         let total = 0;
-        $(el).parents("table").find("tbody tr").each(function(){
+        $(el).parents("table#tableCaisse").find("tbody tr").each(function(){
          
          total +=  parseFloat($(this).find("td:nth-child(5)").html())
         
         })
-        $(document).find('#totalPrix').val(total+ '€')
+        total -= parseFloat(reductionPrix).toFixed(2)
+        $(document).find('#cardCaisse #totalPrix').val(total+ '€')
       });
     }		
     });
 
-    $(document).on("click", "#reduction", () => {
+    $(document).on("click", "#cardCaisse #reduction", () => {
       let barcode = $(document).find("input#reductionBarcode").val()
-      $.post("/reduction", {'barcode' : barcode}, (reductionPrix) => { 
-        // A FAIRE
-            })
+      $.post("/reductionInfos", {'barcode' : barcode}, (data) => { 
+          let pr = parseFloat(data.prixReduc).toFixed(2)
+         
+          console.log($("#cardCaisse #totalPrix").val())
+          let prix = parseFloat($("#cardCaisse #totalPrix").val().replace("€","")) - parseFloat(pr)
+          
+          if(pr != reductionPrix){
+            $("#cardCaisse #totalPrix").val(prix.toFixed(2)+ "€")
+            reductionPrix = pr
+          }
+
+      })
     })
-    $(document).on("click", "#validation", () => {
+    $(document).on("click", "#cardCaisse #validation", () => {
       let keys = []
-      $(document).find("table tbody tr").each(()=>{
+      $(document).find("table#tableCaisse tbody tr").each(function()  {        
         let $td = $(this).find("td:first-child")
-        keys.push([$td.attr('biereid'), $td.attr('quantity')])
+        keys.push([$td.attr('biereid'), $td.attr('quantity'), $(document).find("input#reductionBarcode").val()])
       })
       console.log(keys)
       $.post("/validation", {'commande' : keys}, () => {
-
+       
       })
+      window.location.replace("/caisse")
     })
 
   // Fonction d'édition
-  $(document).on("click", ".edit", function(){		
+  $(document).on("click", "#cardCaisse .edit", function(){		
       $(this).parents("tr").find("td:not(:last-child)").each(function(idx){
        
         if(idx == 0 || idx == 2 || idx == 4 )
@@ -146,15 +163,14 @@ $(document).ready(function(){
           $(this).html('<input  type="text" class="form-control" value="' + $(this).text() + '">');
       });	
 
-   
-
-
-      $(this).parents("tr").find(".add, .edit").toggle();
+      $(this).closest("td").find(".add").css("display","inline")
+      $(this).closest("td").find(".edit").css("display","none")
+      
       $(".add-new").attr("disabled", "disabled");
     });
 
   // De suppression
-  $(document).on("click", ".delete", function(){
+  $(document).on("click", "#cardCaisse .delete", function(){
     $(document).find(".tooltip.fade.bs-tooltip-top.show, .tooltip.bs-tooltip-top.show").remove();
     $(document).find(".tooltip.fade.bs-tooltip-top.show").remove();
         $(this).parents("tr").remove();

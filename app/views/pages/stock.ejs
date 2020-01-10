@@ -38,11 +38,11 @@
           <% bieresStock.forEach(function(biere) { %>
             <tr>
                 <td class="pt-3-half" contenteditable="false"><%= biere.Record.id %></td>
-                <td class="pt-3-half" contenteditable="true"><%= biere.Record.nom %></td>
-                <td class="pt-3-half" contenteditable="true"><%= biere.Record.stock %></td>
-                <td class="pt-3-half" contenteditable="true"><%= biere.Record.codebarre %></td>
-                <td class="pt-3-half" contenteditable="true"><%= biere.Record.consigne %></td>
-                <td class="pt-3-half" contenteditable="true"><%= biere.Record.prix %></td>
+                <td class="pt-3-half" contenteditable="false"><%= biere.Record.nom %></td>
+                <td class="pt-3-half" contenteditable="false"><%= biere.Record.stock %></td>
+                <td class="pt-3-half" contenteditable="false"><%= biere.Record.codebarre %></td>
+                <td class="pt-3-half" contenteditable="false"><%= biere.Record.consigne %></td>
+                <td class="pt-3-half" contenteditable="false"><%= biere.Record.prix %></td>
                 <td>
                   <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a> 
                   <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>

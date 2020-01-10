@@ -33,10 +33,10 @@
           <tr>
             <% reductions.forEach(function(reduction) { %>
               <tr>
-                  <td class="pt-3-half" contenteditable="true"><%= reduction.Record.id %></td>
-                  <td class="pt-3-half" contenteditable="true"><%= reduction.Record.reductionprix %></td>
-                  <td class="pt-3-half" contenteditable="true"><%= reduction.Record.codebarre %></td>
-                  <td class="pt-3-half" contenteditable="true"><%= reduction.Record.isenabled %></td>
+                  <td class="pt-3-half" contenteditable="false"><%= reduction.Record.id %></td>
+                  <td class="pt-3-half" contenteditable="false"><%= reduction.Record.reductionprix %></td>
+                  <td class="pt-3-half" contenteditable="false"><%= reduction.Record.codebarre %></td>
+                  <td class="pt-3-half" contenteditable="false"><%= reduction.Record.isenabled %></td>
                 </tr>
             <% }); %>
           </tr>

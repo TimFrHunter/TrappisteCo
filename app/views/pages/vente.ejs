@@ -24,7 +24,7 @@
         <thead class="thead-dark">
           <tr>
             <th class="text-center">Identifiant</th>
-            <th class="text-center">ID Réduction</th>
+            <!-- <th class="text-center">ID Réduction</th> -->
             <th class="text-center">Date</th>
             <th class="text-center">Produit</th>
             <th class="text-center">Prix Total</th>
@@ -33,11 +33,16 @@
         <tbody>
             <% ventes.forEach(function(vente) { %>
               <tr>
-                  <td class="pt-3-half" contenteditable="true"><%= vente.Record.id %></td>
-                  <td class="pt-3-half" contenteditable="true"><%= vente.Record.idreduction %></td>
-                  <td class="pt-3-half" contenteditable="true"><%= new Date(vente.Record.date * 1000).getDate() %>/<%= new Date(vente.Record.date * 1000).getMonth()+1 %>/<%= new Date(vente.Record.date * 1000).getFullYear() %></td>
-                  <td class="pt-3-half" contenteditable="true"><%- JSON.stringify(vente.Record.bierevendu) %></td>
-                  <td class="pt-3-half" contenteditable="true"><%= vente.Record.prixtotal %> €</td>
+                  <td class="pt-3-half" contenteditable="false"><%= vente.Record.id %>   </td>
+                  <!-- <td class="pt-3-half" contenteditable="false"><%= vente.Record.idreduction %></td> -->
+                  <td class="pt-3-half" contenteditable="false"><%= new Date(vente.Record.date * 1000).getDate() %>/<%= new Date(vente.Record.date * 1000).getMonth()+1 %>/<%= new Date(vente.Record.date * 1000).getFullYear() %></td>
+                  <td class="pt-3-half" contenteditable="false">
+                   
+                    <% for(let d in vente.Record.bierevendu) { %>
+                      <%= d %> : <%= vente.Record.bierevendu[d] %><br/>
+                    <% } %>
+                  </td>
+                  <td class="pt-3-half" contenteditable="false"><%= vente.Record.prixtotal %> €</td>
                 </tr>
             <% }); %>
         </tbody>

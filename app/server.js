@@ -32,7 +32,7 @@ app.get(['/index', '/'], function (req, res) {
 })
 .get('/caisse', function (req, res) {
   role = req.session.role == undefined ? '' : req.session.role 
- // if(role != "vendeur" ) return res.redirect('/')
+  if(role != "vendeur" ) return res.redirect('/')
   res.render(viewsPath + 'caisse', {"role" : role})
 })
 .get('/consigne', async function (req, res) {
@@ -98,15 +98,67 @@ app.get(['/index', '/'], function (req, res) {
   let bieresStock = await listerBieres(idBiere, "Biere" + idBiereEnd)
   return res.send({'bieresStock' : bieresStock})
 })
+.post('/reductionInfos', async (req, res) => {
+  let datas = req.body
+  let idTdr = await levelDB.correspondanceTdrDB.get(datas.barcode)
+  let idTdrEnd = parseInt(idTdr.replace("TicketReduction",''),10) +1
+  let tdr = await listerTicketReduction(idTdr,"TicketReduction" + idTdrEnd)
+  let reducPrix = tdr[0].Record.isenabled == true ? tdr[0].Record.reductionprix : 0
+  
+  return res.send({'prixReduc' :reducPrix })
+})
 .post('/validation', async (req, res) => {
   let els = req.body
-  console.log(els)
+  let vente =''
+  let i = 0
+  let reducBarCode
   for(let el of els.commande) {
     let idBiere = el[0]
     let quantite = el[1]
-    decrementerStock(idBiere,quantite)
+    reducBarCode = el[2] // can be empty 
+    await decrementerStock(idBiere,quantite)
+    if(i!=0)
+      vente += ', '
+    vente += ('\"'+el[0]+'\" : '+el[1]+'').toString()
+    i++
   }
+  vente = "{" + vente + "}"
+  //exemple : await incrementerVente("Vente0" , "Reduction1", "1651351654565" ,"{\"Biere1\" : 6, \"Biere144\" : 12}" ,"11.95")
+  await incrementerVente("Vente0" , "Reduction1", "1651351654565" ,vente.toString() ,"11.97")
+  
+  let idTdr = await levelDB.correspondanceTdrDB.get(reducBarCode)
+  let idTdrEnd = parseInt(idTdr.replace("TicketReduction",''),10) +1
+  let tdr = await listerTicketReduction(idTdr,"TicketReduction" + idTdrEnd)
+  tdr = tdr[0].Record
+  //incrementerTicketDeReduction("TicketReduction0","0.75","164655435534","true"))
+  incrementerTicketDeReduction(tdr.id,tdr.reductionprix.toString(), tdr.codebarre.toString(), "false")
+
   return res.sendStatus(200)
+})
+.post('/validationConsigne', async (req, res) => {
+  let els = req.body
+  let prix = 0
+  for(let el of els.commande) {
+    let idBiere = el[0]
+    let quantite = el[1]
+    prix += parseFloat(el[2])
+    let cons = await listerConsigne("Consigne0", "Consigne~")//a modifier faire une fct plus efficace
+    let lastConsId = cons.length
+    await incrementerConsigne("Consigne"+lastConsId,idBiere, quantite)
+  }
+  //exemple : incrementerTicketDeReduction("TicketReduction0","0.75","164655435534","true"))
+  let tdr = await listerConsigne("TicketReduction0", "TicketReduction~")//a modifier faire une fct plus efficace
+  let barcode = tdr.length.toString()
+  barcode = barcode.padStart(12, '1')
+
+  await incrementerTicketDeReduction("TicketReduction"+tdr.length, prix.toString(), barcode.toString(), "true")
+  levelDB.correspondanceTdrDB.put(barcode.toString(), "TicketReduction"+tdr.length); //comportement a changer dans le futur
+  
+ 
+  return res.sendStatus(200)
+})
+.get("/test", async (req, res) => {
+  return res.send([ress, ress.length])
 })
 
 
@@ -155,6 +207,28 @@ deleteByKey = async (key) => {
 decrementerStock = async (biereId, decrementNumber) => {
   contract = await Contract.getContract(walletPath, user, ccpPath, channelName, chaincodeName) //Global var
   let res = await contract.submitTransaction("decrementerStock", biereId, decrementNumber);
+  await contract.gateway.disconnect();
+  return res.length == 0 ? true : Buffer.from(res).toString(); 
+}
+
+incrementerVente = async (venteId, reductionId, dateTimestamp, biereVendu, prixTotal) => {
+  console.log(biereVendu)
+  contract = await Contract.getContract(walletPath, user, ccpPath, channelName, chaincodeName) //Global var
+  let res = await contract.submitTransaction("incrementerVente", venteId, reductionId, dateTimestamp, biereVendu, prixTotal);
+  await contract.gateway.disconnect();
+  return res.length == 0 ? true : Buffer.from(res).toString();  
+}
+
+incrementerConsigne = async (consigneId, biereId, count) => {
+  contract = await Contract.getContract(walletPath, user, ccpPath, channelName, chaincodeName) //Global var
+  let res = await contract.submitTransaction("incrementerConsigne", consigneId, biereId, count);
+  await contract.gateway.disconnect();
+  return res.length == 0 ? true : Buffer.from(res).toString(); 
+}
+
+incrementerTicketDeReduction = async (ticketReducId, prixReduc, codeBarre, isEnabled) => {
+  contract = await Contract.getContract(walletPath, user, ccpPath, channelName, chaincodeName) //Global var
+  let res = await contract.submitTransaction("incrementerTicketDeReduction", ticketReducId, prixReduc, codeBarre, isEnabled);
   await contract.gateway.disconnect();
   return res.length == 0 ? true : Buffer.from(res).toString(); 
 }

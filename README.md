@@ -15,7 +15,15 @@ Demarrer hyperledger environnement:
 Eteindre hyperledger environnement:
 ./main.sh down
 
+Utilisation:
+Normalement votre navigateur s'ouvre, si c'est pas le cas go : http://localhost:3000
+les identifiants de connexions: 
+responsable1 : pwd
+vendeur1 : pwd
 
-Une fois demarré dans ./web/
-faire: node actions.js
-ensuite ouvrir ce fichier pour tester des requests
+Conseil:
+ouvrer deux navigateurs pour chaque utilisateur, ainsi vous pourrez aller chercher les codes barres que vous voulez utiliser directement avec le user responsable1
+et avec le user vendeur1 ajouter les code barres à la caisse
+
+
+
