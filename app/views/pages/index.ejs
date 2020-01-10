@@ -35,31 +35,139 @@
     </div>
   </div>
 
-  <!-- Authentification -->
-  <section id="cover" class="min-vh-100">
-    <div id="cover-caption">
-        <div class="container">
-            <div class="row text-white">
-                <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
-                    <div class="px-2">
-                        <form action="/connexion" method="POST" class="justify-content-center">
-                            <div class="form-group">
-                                <label class="sr-only">Name</label>
-                                <input type="text" class="form-control" name="username" placeholder="Identifiant">
+  <!-- Identification -->
+  <section id="identification">
+      <div class="container-fluid padding">
+        <div class="row welcome text-center">
+          <div class="col-12">
+            <h2 class="display-4">Identification</h2>
+            <hr>
+          </div>
+        </div>
+      </div>
+  
+      <div class="container-fluid padding" style="background:white">
+          <div class="row text-center">
+              <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+                  <div class="px-2">
+                      <form action="/connexion" method="POST" class="justify-content-center">
+                          <div class="form-group">
+                              <label class="sr-only">Identifiant</label>
+                              <input type="text" class="form-control" name="username" placeholder="Identifiant">
+                          </div>
+                          <div class="form-group">
+                              <label class="sr-only">Mot de passe</label>
+                              <input type="text" class="form-control" name="pwd" placeholder="Mot de passe">
+                          </div>
+                          <input type="hidden" name="token" value="<%- tokenForm %>" >
+                          <button type="submit" class="btn btn-info btn-md">Envoyer</button>
+                      </form>
+                      <br>
+                      <p>
+                        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#vendeur" aria-expanded="false" aria-controls="vendeur">Compte vendeur</button>
+                        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#responsable" aria-expanded="false" aria-controls="responsable">Compte responsable</button>
+                      </p>
+                      <div class="row">
+                        <div class="col">
+                          <div class="collapse multi-collapse" id="vendeur">
+                            <div class="card card-body">
+                              <p><b>Identifiant</b></p>
+                              <p>vendeur1</p>
+                              <p><b>Mot de passe</b></p>
+                              <p>pwd</p>
                             </div>
-                            <div class="form-group">
-                                <label class="sr-only">Email</label>
-                                <input type="text" class="form-control" name="pwd" placeholder="Mot de passe">
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="collapse multi-collapse" id="responsable">
+                            <div class="card card-body">
+                              <p><b>Identifiant</b></p>
+                              <p>responsable1</p>
+                              <p><b>Mot de passe</b></p>
+                              <p>pwd</p>
                             </div>
-                            <input type="hidden" name="token" value="<%- tokenForm %>" >
-                            <button type="submit" class="btn btn-primary btn-lg">Envoyer</button>
-                        </form>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+
+  <!-- Projet -->
+  <section id="projet" style="background:#f8f9fa">
+      <div class="container-fluid padding">
+        <div class="row welcome text-center">
+          <div class="col-12">
+            <h2 class="display-4">Projet</h2>
+            <h3>Réalisation d'une supplychain Hyperledger Fabric</h3>
+            <hr>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid padding">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-lg-3">
+            <img src="./img/pull.png">
+          </div>
+                    <div class="card col-lg-6">
+                      <div class="card-body">
+                        <h4 class="card-title justify-content-center">Contexte et objectifs</h4>
+                        <p class="card-text">Dans le cadre d'une activité de vente de bière trappiste, nous mettons en place dans notre magasin un suivi des ventes et achats sur une blockchain Hyperledger.</p>
+                        <ul>
+                          <li>Consigner chaque bouteilles vendues</li>
+                          <li>Connaitre l'état des consignes</li>
+                          <li>Générer un code de réduction, si les bouteilles consignées nous sont retournées</li>
+                          <li>Connaitre l'état des stocks</li>
+                          <li>Connaitre l'état des ventes</li>
+                        </ul>
+                      </div>
                     </div>
+                  </div>
                 </div>
+
+
+        </div>
+      </div>
+  </section>
+
+  <!-- Carte Equipe -->
+  <section id="equipe">
+  <div class="container-fluid padding">
+    <div class="row welcome text-center">
+      <div class="col-12">
+        <h2 class="display-4">L'équipe</h2>
+        <hr>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid padding">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-lg-3">
+        <div class="card" style="width:18rem">
+          <img class="card-img-top" src="./img/daniel.jpg">
+            <div class="card-body">
+              <h4 class="card-title">Daniel DIEUX</h4>
+              <a href="https://www.linkedin.com/in/ddieux/" target="_blank" class="btn btn-outline-secondary">LinkedIn</a>
             </div>
         </div>
-    </div>
-</section>
+      </div>
+          <div class="card" style="width:12rem" >
+            <img class="card-img-top" src="./img/tim.jpg" style="height:14rem" >
+            <div class="card-body" >
+              <h4 class="card-title">Tim SAMSON</h4>
+              <a href="https://www.linkedin.com/in/tim-samson-743b4371/" target="_blank" class="btn btn-outline-secondary">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  </section>
+
 
   </body>
 </html>
