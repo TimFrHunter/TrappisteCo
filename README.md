@@ -1,29 +1,28 @@
-Test effecuté avec les pre-requis suivants:
+Test effecuté avec les pre-requis suivants :
 node v8.16.2
 npm 6.4.1
 docker 19.03.2
 docker-compose  1.13.0
 
-Il faut installer les images dockers en executant :
+Installer les images Docker en executant :
 ./getDockerImages.sh
 
-Il faut aller dans ./app/ et faire un npm install
+Aller dans ./app/ et lancer npm install dans un terminal
 
-Demarrer hyperledger environnement:
+Demarrer Hyperledger environnement :
 ./main.sh up
 
-Eteindre hyperledger environnement:
+Eteindre Hyperledger environnement :
 ./main.sh down
 
-Utilisation:
-Normalement votre navigateur s'ouvre, si c'est pas le cas go : http://localhost:3000
-les identifiants de connexions: 
-responsable1 : pwd
-vendeur1 : pwd
+Utilisation :
+Le navigatoire doit normalement se lancer. Dans le cas contraire, aller sur : http://localhost:3000
 
-Conseil:
-ouvrer deux navigateurs pour chaque utilisateur, ainsi vous pourrez aller chercher les codes barres que vous voulez utiliser directement avec le user responsable1
-et avec le user vendeur1 ajouter les code barres à la caisse
+Deux identifiants sont proposés pour cet environnement : 
+ID: responsable1 - MDP: pwd
+ID: vendeur1 - MDP: pwd
 
-
-
+Conseil :
+Ouvrir deux navigateurs (ou onglets) différents pour chaque utilisateur.
+Ainsi, vous aurez possibilité de chercher les codes barres, que vous souhaitez utiliser directement avec le user responsable1,
+et ajouter les codes barre à la caisse avec le user vendeur1.
