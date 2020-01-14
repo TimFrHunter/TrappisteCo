@@ -24,6 +24,6 @@ ID: responsable1 - MDP: pwd<br>
 ID: vendeur1 - MDP: pwd
 
 <b>Conseil :</b><br>
-Ouvrir deux navigateurs (ou onglets) différents pour chaque utilisateur.<br>
+Ouvrir deux navigateurs différents pour chaque utilisateur.<br>
 Ainsi, vous aurez possibilité de chercher les codes barres, que vous souhaitez utiliser directement avec le user responsable1,
 et ajouter les codes barre à la caisse avec le user vendeur1.
