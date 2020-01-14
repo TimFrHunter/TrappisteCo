@@ -3,14 +3,9 @@
 function up () {
     export APP_PATH=$PWD/app
     docker-compose -f docker-compose-cli.yaml up -d 2>&1
-    docker exec cli bash -c " \
-    peer channel create -o orderer.trappiste-hunter.com:7050 -c channel-one -f ./channel-artifacts/channelOne.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste-hunter.com/orderers/orderer.trappiste-hunter.com/msp/tlscacerts/tlsca.trappiste-hunter.com-cert.pem
-    peer channel join -b channel-one.block
-    peer chaincode install -n chainecode-trappiste -v 1.0 -l golang -p github.com/chaincode/
-    peer chaincode instantiate -o orderer.trappiste-hunter.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste-hunter.com/orderers/orderer.trappiste-hunter.com/msp/tlscacerts/tlsca.trappiste-hunter.com-cert.pem -C channel-one -n chainecode-trappiste -l golang -v 1.0 -c '{\"Args\":[\"init\"]}' -P 'AND ('\''Orga1MSP.peer'\'')'
-    sleep 5
+    docker exec cli /tmp/scripts/doConfig.sh
+    
     printf '\nAdd data to ledger, data added:  Bieres \n'
-    "
     docker exec cli /tmp/scripts/incrementeLedger.sh
 
     docker exec ca.orga1.trappiste-hunter.com bash -c " \
@@ -39,6 +34,7 @@ function up () {
   
     
         node server.js > /dev/null 2>&1 &
+        #nodemon server.js
         printf 'Server NodeJs à demarrer\n'
         printf "\nUtilisation:\n"
         printf "Normalement votre navigateur s'ouvre, si c'est pas le cas go : http://localhost:3000\n"
@@ -76,6 +72,7 @@ function down() {
     docker volume prune -f
     docker image rm $(docker images | grep dev.peer | tr -s ' ' | cut -d ' ' -f 3) -f
     rm $APP_PATH/wallet -rf
+    rm $APP_PATH/db/* -rf
 }
 
 

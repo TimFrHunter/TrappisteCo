@@ -7,19 +7,23 @@
 version: '2'
 
 volumes:
-  orderer.trappiste-hunter.com:
+  orderer0.trappiste-hunter.com:
+  orderer1.trappiste-hunter.com:
+  orderer2.trappiste-hunter.com:
   peer0.orga1.trappiste-hunter.com:
+  peer1.orga1.trappiste-hunter.com:
 
 networks:
   trappiste-network:
 
 services:
 
-  orderer.trappiste-hunter.com:
+  orderer0.trappiste-hunter.com:
     image: hyperledger/fabric-orderer:$IMAGE_TAG
     command: orderer
-    container_name: orderer.trappiste-hunter.com
+    container_name: orderer0.trappiste-hunter.com
     environment:
+      - ORDERER_GENERAL_LISTENPORT=7050
       - FABRIC_LOGGING_SPEC=INFO
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
@@ -31,21 +35,90 @@ services:
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
-      # - ORDERER_KAFKA_TOPIC_REPLICATIONFACTOR=1
-      # - ORDERER_KAFKA_VERBOSE=true
+     
       - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+
+    networks:
+      - trappiste-network
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/tls/:/var/hyperledger/orderer/tls
+      - orderer0.trappiste-hunter.com:/var/hyperledger/production/orderer
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    ports:
+      - 7050:7050    
+
+  orderer1.trappiste-hunter.com:
+    image: hyperledger/fabric-orderer:$IMAGE_TAG
+    command: orderer
+    container_name: orderer1.trappiste-hunter.com
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=8050
+      - FABRIC_LOGGING_SPEC=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+     
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     volumes:
         - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-        - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer.trappiste-hunter.com/msp:/var/hyperledger/orderer/msp
-        - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer.trappiste-hunter.com/tls/:/var/hyperledger/orderer/tls
-        - orderer.trappiste-hunter.com:/var/hyperledger/production/orderer
+        - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer1.trappiste-hunter.com/msp:/var/hyperledger/orderer/msp
+        - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer1.trappiste-hunter.com/tls/:/var/hyperledger/orderer/tls
+        - orderer1.trappiste-hunter.com:/var/hyperledger/production/orderer
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     ports:
-      - 7050:7050        
+      - 8050:8050        
     networks:
       - trappiste-network
+
+  orderer2.trappiste-hunter.com:
+    image: hyperledger/fabric-orderer:$IMAGE_TAG
+    command: orderer
+    container_name: orderer2.trappiste-hunter.com
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=9050
+      - FABRIC_LOGGING_SPEC=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+     
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+
+    networks:
+      - trappiste-network
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer2.trappiste-hunter.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer2.trappiste-hunter.com/tls/:/var/hyperledger/orderer/tls
+      - orderer2.trappiste-hunter.com:/var/hyperledger/production/orderer
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    ports:
+      - 9050:9050    
+
+
 
   peer0.orga1.trappiste-hunter.com:
     image: hyperledger/fabric-peer:$IMAGE_TAG
@@ -62,9 +135,9 @@ services:
       - CORE_CHAINCODE_LOGGING_SHIM=INFO
       - CORE_CHAINCODE_LOGGING_LEVEL=INFO
       #GOSSIP
-      #- CORE_PEER_GOSSIP_BOOTSTRAP=peer1.orga1.trappiste-hunter.com:8051
-      
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orga1.trappiste-hunter.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.orga1.trappiste-hunter.com:7061
+      #- CORE_PEER_GOSSIP_ENDPOINT=peer0.orga1.trappiste-hunter.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orga1.trappiste-hunter.com:7051 ## utile pour trouver un peer depuis une app sinon avec l'app je peux pas me connecter :/
       
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
@@ -91,6 +164,50 @@ services:
       - trappiste-network
     ports:
       - 7051:7051   
+
+  peer1.orga1.trappiste-hunter.com:
+    image: hyperledger/fabric-peer:$IMAGE_TAG
+    command: peer node start  
+    container_name: peer1.orga1.trappiste-hunter.com
+    environment:
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_ID=peer1.orga1.trappiste-hunter.com
+      - CORE_PEER_ADDRESS=peer1.orga1.trappiste-hunter.com:7061
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7061
+      #ChaineCode
+      - CORE_PEER_CHAINCODEADDRESS=peer1.orga1.trappiste-hunter.com:7062
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7062
+      - CORE_CHAINCODE_LOGGING_SHIM=INFO
+      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      #GOSSIP
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orga1.trappiste-hunter.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.orga1.trappiste-hunter.com:7061
+      
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      #MSPid
+      - CORE_PEER_LOCALMSPID=Orga1MSP
+      #VM
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_trappiste-network #important le _trappiste-network sinon le chainecode marche pas
+      #INFO
+      - FABRIC_LOGGING_SPEC=INFO
+      #TLS
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer1.orga1.trappiste-hunter.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer1.orga1.trappiste-hunter.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.orga1.trappiste-hunter.com:/var/hyperledger/production
+        - ./levelDbClient/:/var/hyperledger/production/levelDbClient/
+    networks:
+      - trappiste-network
+    ports:
+      - 7061:7061   
 
   cli:
     container_name: cli
@@ -119,9 +236,6 @@ services:
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
         - ./scripts/:/tmp/scripts/
-    depends_on:
-      - orderer.trappiste-hunter.com
-      - peer0.orga1.trappiste-hunter.com
     networks:
       - trappiste-network
 

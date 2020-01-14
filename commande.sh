@@ -18,12 +18,12 @@
 
 ##Generate Certificats Stuff
 rm channel-artifacts -rf 
-rm crypto-config -r
+rm crypto-config -rf
 ./bin/cryptogen generate --config=./crypto-config.yaml
 ##Generate Channels Stuff
 mkdir channel-artifacts
-./bin/configtxgen -profile ChannelSystemOrderer00 -channelID channel-sys -outputBlock ./channel-artifacts/genesis.block
-./bin/configtxgen -profile Channel01 -outputCreateChannelTx ./channel-artifacts/channelOne.tx -channelID channel-one
+./bin/configtxgen -profile ChannelSystemRaft -channelID channel-sys-raft -outputBlock ./channel-artifacts/genesis.block
+./bin/configtxgen -profile ChannelMagasin -outputCreateChannelTx ./channel-artifacts/channelMagasin.tx -channelID channel-magasin
 
 exit 1
 

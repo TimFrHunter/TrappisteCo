@@ -3,13 +3,15 @@ OrdererOrgs:
     Domain: trappiste-hunter.com
     EnableNodeOUs: true
     Specs:
-      - Hostname: orderer
+      - Hostname: orderer0
+      - Hostname: orderer1
+      - Hostname: orderer2
 
 PeerOrgs:
   - Name: Orga1
     Domain: orga1.trappiste-hunter.com
     EnableNodeOUs: true
     Template:
-      Count: 1
+      Count: 2
     Users: 
       Count: 1

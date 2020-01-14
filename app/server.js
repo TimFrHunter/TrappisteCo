@@ -12,7 +12,7 @@ const viewsPath = appPath + '/views/pages/'
 const walletPath = appPath + '/wallet';
 const user = 'responsable1'
 const ccpPath = appPath + '/utils/hp/connection-orga1.json'
-const channelName = 'channel-one'
+const channelName = 'channel-magasin'
 const chaincodeName = 'chainecode-trappiste'
 
 app.set('view engine', 'ejs')
@@ -110,12 +110,15 @@ app.get(['/index', '/'], function (req, res) {
 .post('/validation', async (req, res) => {
   let els = req.body
   let vente =''
+  let prixTotal = 0
   let i = 0
   let reducBarCode
   for(let el of els.commande) {
+    console.log(el)
     let idBiere = el[0]
     let quantite = el[1]
     reducBarCode = el[2] // can be empty 
+    prixTotal = el[3]
     await decrementerStock(idBiere,quantite)
     if(i!=0)
       vente += ', '
@@ -123,15 +126,22 @@ app.get(['/index', '/'], function (req, res) {
     i++
   }
   vente = "{" + vente + "}"
-  //exemple : await incrementerVente("Vente0" , "Reduction1", "1651351654565" ,"{\"Biere1\" : 6, \"Biere144\" : 12}" ,"11.95")
-  await incrementerVente("Vente0" , "Reduction1", "1651351654565" ,vente.toString() ,"11.97")
-  
-  let idTdr = await levelDB.correspondanceTdrDB.get(reducBarCode)
-  let idTdrEnd = parseInt(idTdr.replace("TicketReduction",''),10) +1
-  let tdr = await listerTicketReduction(idTdr,"TicketReduction" + idTdrEnd)
-  tdr = tdr[0].Record
-  //incrementerTicketDeReduction("TicketReduction0","0.75","164655435534","true"))
-  incrementerTicketDeReduction(tdr.id,tdr.reductionprix.toString(), tdr.codebarre.toString(), "false")
+  //exemple : await incrementerVente("Vente0" , " ", "1651351654565" ,"{\"Biere1\" : 6, \"Biere144\" : 12}" ,"11.95")
+  let ventes = await listerVente("Vente","Vente~")
+  venteId = ventes.length
+  let timestamp = (new Date().getTime() / 1000).toFixed(0)
+  console.log(timestamp)
+  prixTotal = prixTotal.replace("€","")
+  console.log(prixTotal)
+  await incrementerVente("Vente"+venteId , "NaN", timestamp.toString() ,vente.toString(), prixTotal.toString())
+  if(reducBarCode.length){
+    let idTdr = await levelDB.correspondanceTdrDB.get(reducBarCode)
+    let idTdrEnd = parseInt(idTdr.replace("TicketReduction",''),10) +1
+    let tdr = await listerTicketReduction(idTdr,"TicketReduction" + idTdrEnd)
+    tdr = tdr[0].Record
+    //incrementerTicketDeReduction("TicketReduction0","0.75","164655435534","true"))
+    await incrementerTicketDeReduction(tdr.id,tdr.reductionprix.toString(), tdr.codebarre.toString(), "false")
+  }
 
   return res.sendStatus(200)
 })

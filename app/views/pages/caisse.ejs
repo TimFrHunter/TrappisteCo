@@ -120,7 +120,7 @@ $(document).ready(function(){
         
         })
         total -= parseFloat(reductionPrix).toFixed(2)
-        $(document).find('#cardCaisse #totalPrix').val(total+ '€')
+        $(document).find('#cardCaisse #totalPrix').val(total.toFixed(2)+ '€')
       });
     }		
     });
@@ -144,7 +144,7 @@ $(document).ready(function(){
       let keys = []
       $(document).find("table#tableCaisse tbody tr").each(function()  {        
         let $td = $(this).find("td:first-child")
-        keys.push([$td.attr('biereid'), $td.attr('quantity'), $(document).find("input#reductionBarcode").val()])
+        keys.push([$td.attr('biereid'), $td.attr('quantity'), $(document).find("input#reductionBarcode").val(), $(document).find("#cardCaisse #totalPrix").val() ])
       })
       console.log(keys)
       $.post("/validation", {'commande' : keys}, () => {

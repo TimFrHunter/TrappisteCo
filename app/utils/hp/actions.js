@@ -1,11 +1,12 @@
-const appPath= process.env.APP_PATH
+const appPath="/home/pc/Documents/blockchains/hyperledger/TrappisteCo/app"
+//process.env.APP_PATH
 const path = require('path')
 const Contract = require(appPath +'/utils/hp/contract')
 
-const walletPath = path.join(process.cwd(), 'wallet');
-const user = 'responsable1'
+const walletPath = path.join(appPath, '/wallet');
+const user = 'admin'
 const ccpPath = path.resolve(appPath + '/utils/hp/connection-orga1.json')
-const channelName = 'channel-one'
+const channelName = 'channel-magasin'
 const chaincodeName = 'chainecode-trappiste'
 
 /***********************************************************************
@@ -121,27 +122,27 @@ getLastKey = async (prefixId) => {
 
 test = async () => {
   
-    console.log()
-    console.log(" Do Inserts")
-    console.log()
-    console.log("incremente Stock Orval : ", await incrementerStock("Biere0" , "Orval", "100", "123456789", "0.18", "2.3"))
-    console.log("incremente Stock Trappe :", await incrementerStock("Biere144" , "Trappe", "300", "123456790", "0.15", "1.9"))
-    console.log("incremente Vente : ",await incrementerVente("Vente0" , "Reduction1", "1651351654565" ,"{\"biere1\" : 6, \"biere144\" : 12}" ,"11.95"))
-    console.log("incremente Consigne: ",await incrementerConsigne("Consigne0","Biere144","30"))
-    console.log("incremente Ticket de Reduction",await incrementerTicketDeReduction("TicketReduction0","0.75","164655435534","true"))
-    console.log()
+    // console.log()
+    // console.log(" Do Inserts")
+    // console.log()
+    // console.log("incremente Stock Orval : ", await incrementerStock("Biere0" , "Orval", "100", "123456789", "0.18", "2.3"))
+    // console.log("incremente Stock Trappe :", await incrementerStock("Biere144" , "Trappe", "300", "123456790", "0.15", "1.9"))
+    // console.log("incremente Vente : ",await incrementerVente("Vente0" , "Reduction1", "1651351654565" ,"{\"biere1\" : 6, \"biere144\" : 12}" ,"11.95"))
+    // console.log("incremente Consigne: ",await incrementerConsigne("Consigne0","Biere144","30"))
+    // console.log("incremente Ticket de Reduction",await incrementerTicketDeReduction("TicketReduction0","0.75","164655435534","true"))
+    // console.log()
     console.log(" Do Queries")
     console.log()
     console.log("-------------------------------------------------------------------------------------------------------")
     console.log(JSON.parse(await listerBieres("Biere","Biere~"))) //Toutes les bieres
     console.log("-------------------------------------------------------------------------------------------------------")
-    console.log(JSON.parse(await listerBieres("Biere100","Biere150"))) //Plage specifique
-    console.log("-------------------------------------------------------------------------------------------------------")
-    console.log(JSON.parse(await listerVente("Vente","Vente~")))
-    console.log("-------------------------------------------------------------------------------------------------------")
-    console.log(JSON.parse(await listerConsigne("Consigne","Consigne~")))
-    console.log("-------------------------------------------------------------------------------------------------------")
-    console.log(JSON.parse(await listerTicketReduction("TicketReduction","TicketReduction~")))
+    // console.log(JSON.parse(await listerBieres("Biere100","Biere150"))) //Plage specifique
+    // console.log("-------------------------------------------------------------------------------------------------------")
+    // console.log(JSON.parse(await listerVente("Vente","Vente~")))
+    // console.log("-------------------------------------------------------------------------------------------------------")
+    // console.log(JSON.parse(await listerConsigne("Consigne","Consigne~")))
+    // console.log("-------------------------------------------------------------------------------------------------------")
+    // console.log(JSON.parse(await listerTicketReduction("TicketReduction","TicketReduction~")))
 }
 
 test()
