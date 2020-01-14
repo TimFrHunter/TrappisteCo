@@ -27,3 +27,10 @@ ID: vendeur1 - MDP: pwd
 Ouvrir deux navigateurs différents pour chaque utilisateur.<br>
 Ainsi, vous aurez possibilité de chercher les codes barres, que vous souhaitez utiliser directement avec le user responsable1,
 et ajouter les codes barre à la caisse avec le user vendeur1.
+
+
+Ajout:
+le 14/01:
+  - correction lors de l'achat de l'incrementation des ventes OK
+  - ajout d'un second peer devient (CFT)
+  - ajout de deux orderer mode RAFT ce qui rend le network CFT
