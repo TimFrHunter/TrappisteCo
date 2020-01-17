@@ -159,7 +159,6 @@ services:
         - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer0.orga1.trappiste-hunter.com/msp:/etc/hyperledger/fabric/msp
         - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer0.orga1.trappiste-hunter.com/tls:/etc/hyperledger/fabric/tls
         - peer0.orga1.trappiste-hunter.com:/var/hyperledger/production
-        - ./levelDbClient/:/var/hyperledger/production/levelDbClient/
     networks:
       - trappiste-network
     ports:
@@ -203,7 +202,6 @@ services:
         - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer1.orga1.trappiste-hunter.com/msp:/etc/hyperledger/fabric/msp
         - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer1.orga1.trappiste-hunter.com/tls:/etc/hyperledger/fabric/tls
         - peer1.orga1.trappiste-hunter.com:/var/hyperledger/production
-        - ./levelDbClient/:/var/hyperledger/production/levelDbClient/
     networks:
       - trappiste-network
     ports:
@@ -257,6 +255,6 @@ services:
       command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.orga1.trappiste-hunter.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${CA1_PRIVATE_KEY} -b admin:adminpw -d'
       volumes:
         - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/ca/:/etc/hyperledger/fabric-ca-server-config
-      container_name: ca.orga1.trappiste-hunter.com #ca_peerOrga1
+      container_name: ca.orga1.trappiste-hunter.com 
       networks:
         - trappiste-network      

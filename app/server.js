@@ -1,24 +1,22 @@
-process.env.APP_PATH=process.env.PWD
-const appPath= process.env.APP_PATH
 const express = require('express')
 const app = express()
-const Contract = require(appPath +'/utils/hp/contract')
-const connexion = require(appPath +'/utils/connexion')
+const Contract = require(__dirname +'/modeles/contract')
+const connexion = require(__dirname +'/modeles/connexion')
 const session = require('express-session')
 const bodyParser = require('body-parser');
-const levelDB = require(appPath + '/utils/levelDB');
+const levelDB = require(__dirname + '/modeles/levelDB');
 
-const viewsPath = appPath + '/views/pages/'
-const walletPath = appPath + '/wallet';
+const viewsPath = __dirname + '/views/pages/'
+const walletPath = __dirname + '/wallet';
 const user = 'responsable1'
-const ccpPath = appPath + '/utils/hp/connection-orga1.json'
+const ccpPath = __dirname + '/connection-orga1.json'
 const channelName = 'channel-magasin'
 const chaincodeName = 'chainecode-trappiste'
 
 app.set('view engine', 'ejs')
 app.use(session({secret: '44665400603354170431313', saveUninitialized: true, resave: true}))
-app.use(express.static(appPath + '/public'))
-app.use( bodyParser.urlencoded({ extended: true }))
+app.use(express.static(__dirname + '/public'))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 
 app.listen(3000, function () {
@@ -114,7 +112,7 @@ app.get(['/index', '/'], function (req, res) {
   let i = 0
   let reducBarCode
   for(let el of els.commande) {
-    console.log(el)
+    //console.log(el)
     let idBiere = el[0]
     let quantite = el[1]
     reducBarCode = el[2] // can be empty 
@@ -130,9 +128,9 @@ app.get(['/index', '/'], function (req, res) {
   let ventes = await listerVente("Vente","Vente~")
   venteId = ventes.length
   let timestamp = (new Date().getTime() / 1000).toFixed(0)
-  console.log(timestamp)
+ // console.log(timestamp)
   prixTotal = prixTotal.replace("€","")
-  console.log(prixTotal)
+  //console.log(prixTotal)
   await incrementerVente("Vente"+venteId , "NaN", timestamp.toString() ,vente.toString(), prixTotal.toString())
   if(reducBarCode.length){
     let idTdr = await levelDB.correspondanceTdrDB.get(reducBarCode)
@@ -164,7 +162,6 @@ app.get(['/index', '/'], function (req, res) {
   await incrementerTicketDeReduction("TicketReduction"+tdr.length, prix.toString(), barcode.toString(), "true")
   levelDB.correspondanceTdrDB.put(barcode.toString(), "TicketReduction"+tdr.length); //comportement a changer dans le futur
   
- 
   return res.sendStatus(200)
 })
 .get("/test", async (req, res) => {

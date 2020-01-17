@@ -1,16 +1,12 @@
-const appPath= process.env.APP_PATH
-const fs = require('fs')
-const path = require('path')
 const { FileSystemWallet, Gateway, X509WalletMixin } = require('fabric-network');
-
-const connexionOrga1InfoFile = appPath + '/utils/hp/connection-orga1.json';
+const connexionOrga1InfoFile = __dirname + '/../connection-orga1.json';
 
 registerResponsable1 = async () => {
     try{
 
 
         //FileSytem 
-        const walletPath = appPath + '/wallet'
+        const walletPath = __dirname + '/../wallet'
         const wallet = new FileSystemWallet(walletPath)
 
         // Check to see if we've already enrolled the user.
@@ -55,7 +51,7 @@ registerVendeur1 = async () => {
 
 
         //FileSytem 
-        const walletPath = appPath + '/wallet'
+        const walletPath = __dirname + '/../wallet'
         const wallet = new FileSystemWallet(walletPath)
 
         // Check to see if we've already enrolled the user.

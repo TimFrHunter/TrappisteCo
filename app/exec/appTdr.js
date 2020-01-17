@@ -1,5 +1,4 @@
-const appPath= process.env.APP_PATH
-const levelDB = require(appPath + '/utils/levelDB');
+const levelDB = require(__dirname + '/../modeles/levelDB');
 
 levelDB.correspondanceTdrDB.put('111111111110','TicketReduction0'); 
 levelDB.correspondanceTdrDB.put('111111111111','TicketReduction1'); 
