@@ -13,6 +13,9 @@ git clone https://github.com/TimFrHunter/TrappisteCo.git <br>
 
 - Aller dans ./app/ et lancer npm install dans un terminal
 
+- Revenir sur dossier parent :<br>
+cd ..<br>
+
 - Demarrer Hyperledger environnement :<br>
 ./main.sh up
 
