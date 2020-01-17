@@ -32,17 +32,17 @@ function up () {
     docker ps
    
   
-    node server.js > /dev/null 2>&1 &
-    #nodemon server.js
+    node app.js > /dev/null 2>&1 &
+    #nodemon app.js
     printf 'Server NodeJs à demarrer\n'
     printf "\nUtilisation:\n"
     printf "Normalement votre navigateur s'ouvre, si c'est pas le cas go : http://localhost:3000\n"
     printf "les identifiants de connexions: \n"
-    printf "responsable1 : pwd\n"
-    printf "vendeur1 : pwd\n\n"
+    printf "responsable : pwd\n"
+    printf "vendeur : pwd\n\n"
     printf "Conseil:\n"
-    printf "ouvrer deux navigateurs pour chaque utilisateur, ainsi vous pourrez aller chercher les codes barres que vous voulez utiliser directement avec le user responsable1\n"
-    printf "et avec le user vendeur1 ajouter les code barres à la caisse\n\n"
+    printf "ouvrer deux navigateurs pour chaque utilisateur, ainsi vous pourrez aller chercher les codes barres que vous voulez utiliser directement avec le user responsable\n"
+    printf "et avec le user vendeur ajouter les code barres à la caisse\n\n"
     
     sleep 2
 
@@ -64,7 +64,7 @@ function up () {
 }
 function down() {
     export APP_PATH=$PWD/app
-    kill $(ps -ef | grep 'node server.js' | head -n 1 | tr -s ' '  | cut -d ' ' -f 2 ) # kill server
+    kill $(ps -ef | grep 'node app.js' | head -n 1 | tr -s ' '  | cut -d ' ' -f 2 ) # kill server
     docker-compose -f docker-compose-cli.yaml down
     docker container prune -f 
     docker network prune -f

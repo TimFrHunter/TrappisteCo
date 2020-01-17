@@ -1,7 +1,7 @@
 const { FileSystemWallet, Gateway, X509WalletMixin } = require('fabric-network');
 const connexionOrga1InfoFile = __dirname + '/../connection-orga1.json';
 
-registerResponsable1 = async () => {
+registerResponsable = async () => {
     try{
 
 
@@ -10,8 +10,8 @@ registerResponsable1 = async () => {
         const wallet = new FileSystemWallet(walletPath)
 
         // Check to see if we've already enrolled the user.
-        if (await wallet.exists('responsable1')) {
-            console.log('An identity for the user "responsable1" already exists in the wallet');
+        if (await wallet.exists('responsable')) {
+            console.log('An identity for the user "responsable" already exists in the wallet');
             return;
         }
         // Check to see if we've already enrolled the admin user.
@@ -30,23 +30,23 @@ registerResponsable1 = async () => {
         
         const secret = await ca.register({ 
             affiliation: 'magasin.responsable' // par defaut dans le serveur CA //c'est le EnableOUs  Organization Unit créé des sous groupes qui sont rattachés un utilisteur avec son role
-        , enrollmentID: 'responsable1', role: 'client'}, adminIdentity)
-        const enrollment = await ca.enroll({ enrollmentID: 'responsable1', enrollmentSecret: secret})
+        , enrollmentID: 'responsable', role: 'client'}, adminIdentity)
+        const enrollment = await ca.enroll({ enrollmentID: 'responsable', enrollmentSecret: secret})
         const userIdentity = X509WalletMixin.createIdentity('Orga1MSP', enrollment.certificate, enrollment.key.toBytes())
-        await wallet.import('responsable1', userIdentity)
-        console.log('Successfully registered and enrolled by admin,  user : "responsable1" and imported it into the wallet');
+        await wallet.import('responsable', userIdentity)
+        console.log('Successfully registered and enrolled by admin,  user : "responsable" and imported it into the wallet');
 
     }
     catch (error) {
-        console.error(`Failed to register user "responsable1": ${error}`);
+        console.error(`Failed to register user "responsable": ${error}`);
         process.exit(1);
     }
     
 }
 
-registerResponsable1()
+registerResponsable()
 
-registerVendeur1 = async () => {
+registerVendeur = async () => {
     try{
 
 
@@ -55,8 +55,8 @@ registerVendeur1 = async () => {
         const wallet = new FileSystemWallet(walletPath)
 
         // Check to see if we've already enrolled the user.
-        if (await wallet.exists('vendeur1')) {
-            console.log('An identity for the user "vendeur1" already exists in the wallet');
+        if (await wallet.exists('vendeur')) {
+            console.log('An identity for the user "vendeur" already exists in the wallet');
             return;
         }
         // Check to see if we've already enrolled the admin user.
@@ -75,19 +75,19 @@ registerVendeur1 = async () => {
         
         const secret = await ca.register({ 
             affiliation: 'magasin.vendeur' // par defaut dans le serveur CA //c'est le EnableOUs  Organization Unit créé des sous groupes qui sont rattachés un utilisteur avec son role
-        , enrollmentID: 'vendeur1', role: 'client'}, adminIdentity)
-        const enrollment = await ca.enroll({ enrollmentID: 'vendeur1', enrollmentSecret: secret})
+        , enrollmentID: 'vendeur', role: 'client'}, adminIdentity)
+        const enrollment = await ca.enroll({ enrollmentID: 'vendeur', enrollmentSecret: secret})
         const userIdentity = X509WalletMixin.createIdentity('Orga1MSP', enrollment.certificate, enrollment.key.toBytes())
-        await wallet.import('vendeur1', userIdentity)
-        console.log('Successfully registered and enrolled by admin,  user : "vendeur1" and imported it into the wallet');
+        await wallet.import('vendeur', userIdentity)
+        console.log('Successfully registered and enrolled by admin,  user : "vendeur" and imported it into the wallet');
 
     }
     catch (error) {
-        console.error(`Failed to register user "vendeur1": ${error}`);
+        console.error(`Failed to register user "vendeur": ${error}`);
         process.exit(1);
     }
     
 }
 
-registerVendeur1()
+registerVendeur()
 

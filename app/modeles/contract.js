@@ -45,4 +45,4 @@ init = async (walletPath, user, ccpPath, channelName, chaincodeName) => {
    
 }
 
-exports.getContract = init
+exports.init = init

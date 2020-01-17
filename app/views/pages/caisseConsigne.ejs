@@ -80,7 +80,7 @@
           let quantite = $(this).parents("tr").find("td:nth-child(4) input").val()
          
           let el = this
-          $.post("/getProductInfo", {'barcode' : barcode }, function( datas ) {
+          $.post("/vendeur/getProductInfo", {'barcode' : barcode }, function( datas ) {
             let infos = [datas.bieresStock[0].Record.nom,  datas.bieresStock[0].Record.codebarre, datas.bieresStock[0].Record.consigne, quantite, parseFloat(parseInt(quantite) * parseFloat(datas.bieresStock[0].Record.consigne)).toFixed(2) ]
             
             input.each(function(idx){
@@ -103,7 +103,7 @@
     
         $(document).on("click", "#cardCaisseConsigne #reduction", () => {
           let barcode = $(document).find("input#reductionBarcode").val()
-          $.post("/reduction", {'barcode' : barcode}, (reductionPrix) => { 
+          $.post("/vendeur/reduction", {'barcode' : barcode}, (reductionPrix) => { 
             // A FAIRE
                 })
         })
@@ -114,7 +114,7 @@
             keys.push([$td.attr('biereid'), $td.attr('quantity'), $(this).find("td:nth-child(3)").html()]) // le dernier c le prix consigne
           })
           console.log(keys)
-          $.post("/validationConsigne", {'commande' : keys}, () => {
+          $.post("/vendeur/validationConsigne", {'commande' : keys}, () => {
     
           })
           window.location.replace("/caisse")

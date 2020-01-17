@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -101,7 +101,7 @@ $(document).ready(function(){
       let quantite = $(this).parents("tr").find("td:nth-child(4) input").val()
      
       let el = this
-      $.post("/getProductInfo", {'barcode' : barcode }, function( datas ) {
+      $.post("/vendeur/getProductInfo", {'barcode' : barcode }, function( datas ) {
         let infos = [datas.bieresStock[0].Record.nom,  datas.bieresStock[0].Record.codebarre, datas.bieresStock[0].Record.prix, quantite, parseFloat(parseInt(quantite) * parseFloat(datas.bieresStock[0].Record.prix)).toFixed(2) ]
         
         input.each(function(idx){
@@ -127,7 +127,7 @@ $(document).ready(function(){
 
     $(document).on("click", "#cardCaisse #reduction", () => {
       let barcode = $(document).find("input#reductionBarcode").val()
-      $.post("/reductionInfos", {'barcode' : barcode}, (data) => { 
+      $.post("/vendeur/reductionInfos", {'barcode' : barcode}, (data) => { 
           let pr = parseFloat(data.prixReduc).toFixed(2)
          
           console.log($("#cardCaisse #totalPrix").val())
@@ -146,11 +146,11 @@ $(document).ready(function(){
         let $td = $(this).find("td:first-child")
         keys.push([$td.attr('biereid'), $td.attr('quantity'), $(document).find("input#reductionBarcode").val(), $(document).find("#cardCaisse #totalPrix").val() ])
       })
-      console.log(keys)
-      $.post("/validation", {'commande' : keys}, () => {
+    
+      $.post("/vendeur/validation", {'commande' : keys}, () => {
        
       })
-      window.location.replace("/caisse")
+      window.location.replace("/vendeur/caisse")
     })
 
   // Fonction d'édition
