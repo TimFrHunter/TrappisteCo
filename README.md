@@ -5,6 +5,9 @@ docker 19.03.2
 docker-compose  1.13.0
 
 <b>Installation :</b><br>
+- Télécharger le repository Github :<br>
+git clone https://github.com/TimFrHunter/TrappisteCo.git <br>
+
 - Installer les images Docker en executant :<br>
 ./getDockerImages.sh
 
