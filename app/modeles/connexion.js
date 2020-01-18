@@ -4,7 +4,7 @@ const levelDB = require(__dirname + '/levelDB');
 submitForm = async (formData, session) => {
   let token = formData.token
   if(token != session.tokenForm){
-    return false 
+    return 'tokenFalse' 
   }
   let username = formData.username
   try {

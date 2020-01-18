@@ -1,7 +1,19 @@
 #!/bin/bash
 
-function up () {
+function down() {
     export APP_PATH=$PWD/app
+    kill $(ps -ef | grep 'node app/app.js' | head -n 1 | tr -s ' '  | cut -d ' ' -f 2 ) # kill server
+    docker-compose -f docker-compose-cli.yaml down
+    docker container prune -f 
+    docker network prune -f
+    docker volume prune -f
+    docker image rm $(docker images | grep dev.peer | tr -s ' ' | cut -d ' ' -f 3) -f
+    rm $APP_PATH/wallet -rf
+    rm $APP_PATH/db/* -rf
+}
+
+function up () {
+    down
     docker-compose -f docker-compose-cli.yaml up -d 2>&1
     docker exec cli /tmp/scripts/doConfig.sh
     
@@ -32,7 +44,7 @@ function up () {
     docker ps
    
   
-    node app.js > /dev/null 2>&1 &
+    node app/app.js > /dev/null 2>&1 &
     #nodemon app.js
     printf 'Server NodeJs à demarrer\n'
     printf "\nUtilisation:\n"
@@ -62,17 +74,7 @@ function up () {
     fi    
     
 }
-function down() {
-    export APP_PATH=$PWD/app
-    kill $(ps -ef | grep 'node app.js' | head -n 1 | tr -s ' '  | cut -d ' ' -f 2 ) # kill server
-    docker-compose -f docker-compose-cli.yaml down
-    docker container prune -f 
-    docker network prune -f
-    docker volume prune -f
-    docker image rm $(docker images | grep dev.peer | tr -s ' ' | cut -d ' ' -f 3) -f
-    rm $APP_PATH/wallet -rf
-    rm $APP_PATH/db/* -rf
-}
+
 
 
 MODE=$1

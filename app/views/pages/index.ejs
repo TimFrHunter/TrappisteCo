@@ -50,6 +50,11 @@
           <div class="row text-center">
               <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
                   <div class="px-2">
+                      <% if (info != null) { %>
+                        <div class="alert alert-warning" role="alert">
+                            <% if (info == 'token') { %> Token de connexion expiré <% } %>
+                        </div>
+                      <% } %>
                       <form action="/connexion" method="POST" class="justify-content-center">
                           <div class="form-group">
                               <label class="sr-only">Identifiant</label>
