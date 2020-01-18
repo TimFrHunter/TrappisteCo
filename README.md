@@ -42,8 +42,8 @@ Lors de la validation d'achat à la caisse:
 
 Lors de la validation de consigne à la caisse:
 - le stock de consigne est incrémenté (sur plusieur ligne si plusieur consigne validée)
-- un ticket de reduction est créé
+- un seul ticket de reduction est créé
 
-Infos:
+<b>Infos:</b>
 - 2 peers infra (CFT)
 - 3 orderer mode RAFT, network CFT
