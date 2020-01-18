@@ -34,9 +34,16 @@ Ouvrir deux navigateurs différents pour chaque utilisateur.<br>
 Ainsi, vous aurez possibilité de chercher les codes barres, que vous souhaitez utiliser directement avec le user responsable1,
 et ajouter les codes barre à la caisse avec le user vendeur1.
 
+<b>Fonctionnement de l'app:</b><br>
+Lors de la validation d'achat à la caisse:
+- le stock est décrémenté
+- une vente est incrémentée
+- si un ticket de reduction est utilisé, il est passé à false, et devient non utilisable
 
-Ajout:
-le 14/01:
-  - correction lors de l'achat de l'incrementation des ventes OK
-  - ajout d'un second peer devient (CFT)
-  - ajout de deux orderer mode RAFT ce qui rend le network CFT
+Lors de la validation de consigne à la caisse:
+- le stock de consigne est incrémenté (sur plusieur ligne si plusieur consigne validée)
+- un ticket de reduction est créé
+
+Infos:
+- 2 peers infra (CFT)
+- 3 orderer mode RAFT, network CFT
