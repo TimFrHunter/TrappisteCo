@@ -1,21 +1,16 @@
-const appPath= process.env.APP_PATH
 const fs = require('fs')
-const path = require('path')
 const FabricCAServices = require('fabric-ca-client')
 const { FileSystemWallet, X509WalletMixin } = require('fabric-network');
 
-const pathFile = appPath + '/../crypto-config/peerOrganizations/orga1.trappiste-hunter.com/tlsca/tlsca.orga1.trappiste-hunter.com-cert.pem'
+const pathFile = __dirname + '/../../crypto-config/peerOrganizations/orga1.trappiste-hunter.com/tlsca/tlsca.orga1.trappiste-hunter.com-cert.pem'
 const certificatOrga1DePeers = fs.readFileSync(pathFile, 'utf8')
-
-
-
 
     enrollAdmin = async () => {
         try{
 
 
             //FileSytem 
-            const walletPath = appPath + '/wallet'
+            const walletPath = __dirname + '/../wallet'
             const wallet = new FileSystemWallet(walletPath)
 
             //CaClient to communicate with the CA

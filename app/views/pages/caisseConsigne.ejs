@@ -1,8 +1,23 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <title>T&C. Caisse</title>
+  </head>
 
+  <%- include('../partials/menu', {role : role }) %> 
 
   <!-- Table#tableCaisseConsigne -->
   <div class="card" id="cardCaisseConsigne">
     <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Caisse Consigne</h3>
+    <br/>
+    <div id="infoError" class="alert alert-warning d-none text-center" role="alert"></div>
     <div class="card-body">
       <div id="table" class="table-editable">
         <button type="button" class="btn btn-info add-new float-right mb-2"><i class="fa fa-plus"></i>Ajouter Consigne</button>
@@ -41,7 +56,10 @@
   
   <!-- Script d'Actions-->
 <script type="text/javascript">
+
     $(document).ready(function(){
+      let $infoError = $(document).find("#infoError")
+
       $('[data-toggle="tooltip"]').tooltip();
       var actions = '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a> '+ 
                     '<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>' +
@@ -80,7 +98,14 @@
           let quantite = $(this).parents("tr").find("td:nth-child(4) input").val()
          
           let el = this
-          $.post("/getProductInfo", {'barcode' : barcode }, function( datas ) {
+          $.post("/vendeur/getProductInfo", {'barcode' : barcode }, function( datas ) {
+            if(!datas.barcodeExist){
+              $infoError.html("Le code barre n'existe pas")
+              $infoError.removeClass("d-none")
+              return 1
+            }
+            $infoError.addClass("d-none")
+
             let infos = [datas.bieresStock[0].Record.nom,  datas.bieresStock[0].Record.codebarre, datas.bieresStock[0].Record.consigne, quantite, parseFloat(parseInt(quantite) * parseFloat(datas.bieresStock[0].Record.consigne)).toFixed(2) ]
             
             input.each(function(idx){
@@ -96,14 +121,14 @@
             $(el).parents("table#tableCaisseConsigne").find("tbody tr").each(function(){
                 total +=  parseFloat($(this).find("td:nth-child(5)").html())
             })
-            $(document).find('#cardCaisseConsigne #totalPrix').val(total+ '€')
+            $(document).find('#cardCaisseConsigne #totalPrix').val(total.toFixed(2)+ '€')
           });
         }		
         });
     
         $(document).on("click", "#cardCaisseConsigne #reduction", () => {
           let barcode = $(document).find("input#reductionBarcode").val()
-          $.post("/reduction", {'barcode' : barcode}, (reductionPrix) => { 
+          $.post("/vendeur/reduction", {'barcode' : barcode}, (reductionPrix) => { 
             // A FAIRE
                 })
         })
@@ -114,10 +139,10 @@
             keys.push([$td.attr('biereid'), $td.attr('quantity'), $(this).find("td:nth-child(3)").html()]) // le dernier c le prix consigne
           })
           console.log(keys)
-          $.post("/validationConsigne", {'commande' : keys}, () => {
+          $.post("/vendeur/validationConsigne", {'commande' : keys}, () => {
     
           })
-          window.location.replace("/caisse")
+          window.location.replace("/vendeur/caisse")
         })
     
       // Fonction d'édition

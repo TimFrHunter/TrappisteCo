@@ -2,13 +2,17 @@ package main
 
 import (
 	"bytes"
+	"crypto/x509"
 	"encoding/json"
+	"strings"
 
 	"fmt"
 	"strconv"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
+
+	"github.com/hyperledger/fabric/core/chaincode/shim/ext/cid"
 )
 
 type Biere struct {
@@ -83,6 +87,8 @@ func (tc *TrappisteContract) Invoke(stub shim.ChaincodeStubInterface) peer.Respo
 		return tc.getLastKey(stub, args)
 	} else if function == "delete" {
 		return tc.delete(stub, args)
+	} else if function == "test" {
+		return tc.test(stub)
 	}
 	return shim.Error("Invalid Trappiste Contract function name.")
 }
@@ -91,6 +97,7 @@ func (tc *TrappisteContract) Invoke(stub shim.ChaincodeStubInterface) peer.Respo
 	SAVE STRUCT
 ********************************************************/
 func (tc *TrappisteContract) incrementerStock(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+
 	id := args[0]
 	nom := args[1]
 	stock, err := strconv.Atoi(args[2])
@@ -402,6 +409,51 @@ func (tc *TrappisteContract) lister(stub shim.ChaincodeStubInterface, startRange
 	}
 	buffer.WriteString("]")
 	return buffer, nil
+}
+
+func (tc *TrappisteContract) test(stub shim.ChaincodeStubInterface) peer.Response {
+	// Get the client ID object
+	idClient, err := cid.New(stub)
+	if err != nil {
+		return shim.Error("err une")
+	}
+	// mspid, err := idClient.GetMSPID()
+	// if err != nil {
+	// 	return shim.Error("err deux")
+	// }
+	cert, _ := idClient.GetX509Certificate()
+
+	val := tc.isAdmin(cert)
+	if val {
+		return shim.Success([]byte("true"))
+	}
+
+	return shim.Success([]byte("false"))
+	// switch mspid {
+	// 	case "org1MSP":
+	// 		err = id.AssertAttributeValue("attr1", "true")
+	// 	case "org2MSP":
+	// 		err = id.AssertAttributeValue("attr2", "true")
+	// 	default:
+	// 		err = errors.New("Wrong MSP")
+	// }
+	//return shim.Success([]byte(id))
+}
+
+func (tc *TrappisteContract) isAdmin(cert *x509.Certificate) bool {
+	x := cert.Subject.ToRDNSequence().String()
+	startIdx := strings.Index(x, "OU=") + 3
+
+	if startIdx > -1 {
+		endIdx := strings.Index(x[startIdx+1:], ",") + 1
+		if endIdx > -1 {
+			ouRole := x[startIdx : startIdx+endIdx]
+			if ouRole == "admin" {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 /********************************************************
