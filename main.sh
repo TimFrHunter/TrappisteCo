@@ -14,7 +14,6 @@ function down() {
 
 function up () {
     down
-
     docker-compose -f docker-compose-cli.yaml up -d 2>&1
     docker exec ca.orga1.trappiste-hunter.com bash -c " \
     fabric-ca-client enroll -u https://admin:adminpw@ca.orga1.trappiste-hunter.com:7054
@@ -24,8 +23,8 @@ function up () {
     "
     docker exec cli /tmp/scripts/doConfig.sh
     #docker exec cli bash -c "peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"test\"]}'"
-
     #return 1
+
     docker exec cli /tmp/scripts/incrementeLedger.sh
     
     node app/exec/enrollAdmin.js

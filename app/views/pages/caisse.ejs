@@ -12,10 +12,11 @@
   </head>
 
   <%- include('../partials/menu', {role : role }) %> 
-
   <!-- Table#tableCaisse -->
 <div class="card" id="cardCaisse" style="margin-bottom: 250px;">
     <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Caisse</h3>
+    <br/>
+    <div id="infoError" class="alert alert-warning d-none text-center" role="alert"></div>
     <div class="card-body">
       <div id="table" class="table-editable">
         <button type="button" class="btn btn-info add-new float-right mb-2"><i class="fa fa-plus"></i>Ajouter Article</button>
@@ -55,14 +56,15 @@
   </div>
 
 
-  <%- include('./caisseConsigne') %> 
 
 
   
   <!-- Script d'Actions-->
 <script type="text/javascript">
-let reductionPrix = 0
+
 $(document).ready(function(){
+  let reductionPrix = 0
+  let $infoError = $(document).find("#infoError")
   $('[data-toggle="tooltip"]').tooltip();
   var actions = '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a> '+ 
                 '<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>' +
@@ -102,6 +104,12 @@ $(document).ready(function(){
      
       let el = this
       $.post("/vendeur/getProductInfo", {'barcode' : barcode }, function( datas ) {
+        if(!datas.barcodeExist){
+          $infoError.html("Le code barre n'existe pas")
+          $infoError.removeClass("d-none")
+          return 1
+        }
+        $infoError.addClass("d-none")
         let infos = [datas.bieresStock[0].Record.nom,  datas.bieresStock[0].Record.codebarre, datas.bieresStock[0].Record.prix, quantite, parseFloat(parseInt(quantite) * parseFloat(datas.bieresStock[0].Record.prix)).toFixed(2) ]
         
         input.each(function(idx){
@@ -128,15 +136,24 @@ $(document).ready(function(){
     $(document).on("click", "#cardCaisse #reduction", () => {
       let barcode = $(document).find("input#reductionBarcode").val()
       $.post("/vendeur/reductionInfos", {'barcode' : barcode}, (data) => { 
-          let pr = parseFloat(data.prixReduc).toFixed(2)
-         
-          console.log($("#cardCaisse #totalPrix").val())
-          let prix = parseFloat($("#cardCaisse #totalPrix").val().replace("€","")) - parseFloat(pr)
-          
-          if(pr != reductionPrix){
-            $("#cardCaisse #totalPrix").val(prix.toFixed(2)+ "€")
-            reductionPrix = pr
-          }
+        if(!data.reducExist){
+          $infoError.html("Le code de reduction est invalide")
+          $infoError.removeClass("d-none")
+          return 1
+        }
+        $infoError.addClass("d-none")
+        let prix = 0;
+        $(document).find("#tableCaisse tbody tr").each(() => {
+          prix += parseFloat($(this).find("td:nth-child(5)").html()).toFixed(2)
+        })
+        prix -= parseFloat(data.prixReduc)
+        
+        if(parseFloat(data.prixReduc) != reductionPrix){
+
+          reductionPrix = parseFloat(data.prixReduc)
+        }
+        $("#cardCaisse #totalPrix").val(prix.toFixed(2)+ "€")
+       
 
       })
     })

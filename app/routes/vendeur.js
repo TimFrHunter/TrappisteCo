@@ -16,34 +16,51 @@ router.get('/caisse', async (req, res) => {
     if(role != "vendeur" ) 
         return res.redirect('/')
     res.render('caisse', {"role" : role})
+}).get('/caisse-consigne', async (req, res) => {
+    role = req.session.role == undefined ? '' : req.session.role 
+    if(role != "vendeur" ) 
+        return res.redirect('/')
+    res.render('caisseConsigne', {"role" : role})
 })
 .post('/getProductInfo', async (req, res) => {
     role = req.session.role == undefined ? '' : req.session.role 
     if(role == "vendeur" ) {
-        let datas = req.body
-        let idBiere = await levelDB.correspondanceDB.get(datas.barcode)
-        let idBiereEnd = parseInt(idBiere.replace("Biere",''),10) +1
-        let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
-        let bieresStock = await lister.listerBieres(contrat, idBiere, "Biere" + idBiereEnd)
-        await contrat.gateway.disconnect();
-        return res.send({'bieresStock' : bieresStock})
+        try{
+            let datas = req.body
+            let idBiere = await levelDB.correspondanceDB.get(datas.barcode)
+            let idBiereEnd = parseInt(idBiere.replace("Biere",''),10) +1
+            let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
+            let bieresStock = await lister.listerBieres(contrat, idBiere, "Biere" + idBiereEnd)
+            await contrat.gateway.disconnect();
+            return res.send({ 'barcodeExist' : true, 'bieresStock' : bieresStock})
+        } catch (e){
+            return res.send({ 'barcodeExist' : false, 'bieresStock' : {} })
+        }
     }else
-        return res.send({'bieresStock' : {} })
+        return res.send({ 'barcodeExist' : false, 'bieresStock' : {} })
     
 })
 .post('/reductionInfos', async (req, res) => {
     role = req.session.role == undefined ? '' : req.session.role 
     if(role == "vendeur" ) {
-        let datas = req.body
-        let idTdr = await levelDB.correspondanceTdrDB.get(datas.barcode)
-        let idTdrEnd = parseInt(idTdr.replace("TicketReduction",''),10) +1
-        let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
-        let tdr = await lister.listerTicketReduction(contrat, idTdr,"TicketReduction" + idTdrEnd)
-        let reducPrix = tdr[0].Record.isenabled == true ? tdr[0].Record.reductionprix : 0
-        await contrat.gateway.disconnect();
-        return res.send({'prixReduc' : reducPrix })
+        try {
+            let datas = req.body
+            let idTdr = await levelDB.correspondanceTdrDB.get(datas.barcode)
+            let idTdrEnd = parseInt(idTdr.replace("TicketReduction",''),10) +1
+            let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
+            let tdr = await lister.listerTicketReduction(contrat, idTdr,"TicketReduction" + idTdrEnd)
+            let reducPrix = tdr[0].Record.isenabled == true ? tdr[0].Record.reductionprix : 0
+            await contrat.gateway.disconnect();
+            if(reducPrix == 0){
+                return res.send({ 'reducExist' : false, 'prixReduc' : reducPrix })
+            }
+            return res.send({ 'reducExist' : true, 'prixReduc' : reducPrix })
+        } catch (error) {
+            return res.send({ 'reducExist' : false, 'prixReduc' : {} })
+        }
+       
     }
-    return res.send({'prixReduc' : {} })
+    return res.send({ 'reducExist' : false, 'prixReduc' : {} })
 })
 .post('/validation', async (req, res) => {
     role = req.session.role == undefined ? '' : req.session.role 
