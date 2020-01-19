@@ -2,7 +2,7 @@
 
 function down() {
     export APP_PATH=$PWD/app
-    kill $(ps -ef | grep 'node app/app.js' | head -n 1 | tr -s ' '  | cut -d ' ' -f 2 ) # kill server
+    kill $(ps -ef | grep 'node app/app.js' | grep -v 'grep'  | head -n 1 | tr -s ' '  | cut -d ' ' -f 2) # kill server
     docker-compose -f docker-compose-cli.yaml down
     docker container prune -f 
     docker network prune -f
@@ -14,22 +14,23 @@ function down() {
 
 function up () {
     down
-    docker-compose -f docker-compose-cli.yaml up -d 2>&1
-    docker exec cli /tmp/scripts/doConfig.sh
-    
-    printf '\nAdd data to ledger, data added:  Bieres \n'
-    docker exec cli /tmp/scripts/incrementeLedger.sh
 
+    docker-compose -f docker-compose-cli.yaml up -d 2>&1
     docker exec ca.orga1.trappiste-hunter.com bash -c " \
     fabric-ca-client enroll -u https://admin:adminpw@ca.orga1.trappiste-hunter.com:7054
     fabric-ca-client affiliation add magasin 
     fabric-ca-client affiliation add magasin.responsable 
     fabric-ca-client affiliation add magasin.vendeur
     "
+    docker exec cli /tmp/scripts/doConfig.sh
+    #docker exec cli bash -c "peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"test\"]}'"
+
+    #return 1
+    docker exec cli /tmp/scripts/incrementeLedger.sh
     
     node app/exec/enrollAdmin.js
     node app/exec/registerUser.js
-    # A refaire c pas propre si le temp..
+ 
     node app/exec/appUsers.js
     node app/exec/appStock.js
     node app/exec/appTdr.js
