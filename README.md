@@ -23,16 +23,18 @@ cd ..<br>
 ./main.sh down
 
 <b>Utilisation :</b><br>
-Le navigatoire doit normalement se lancer. Dans le cas contraire, aller sur : http://localhost:3000 <br>
+Le navigateur doit normalement se lancer. Dans le cas contraire, aller sur : http://localhost:3000 <br>
 
 Deux identifiants sont proposés pour cet environnement :<br> 
-ID: responsable1 - MDP: pwd<br>
-ID: vendeur1 - MDP: pwd
+ID: responsable - MDP: pwd<br>
+ID: vendeur - MDP: pwd
 
 <b>Conseil :</b><br>
 Ouvrir deux navigateurs différents pour chaque utilisateur.<br>
-Ainsi, vous aurez possibilité de chercher les codes barres, que vous souhaitez utiliser directement avec le user responsable1,
-et ajouter les codes barre à la caisse avec le user vendeur1.
+
+Ainsi, vous aurez la possibilité de chercher les codes barres que vous souhaitez utiliser, directement avec le user responsable,
+et ajouter les codes barre à la caisse avec le user vendeur.
+
 
 <b>Fonctionnement de l'app:</b><br>
 Lors de la validation d'achat à la caisse:
@@ -42,8 +44,9 @@ Lors de la validation d'achat à la caisse:
 
 Lors de la validation de consigne à la caisse:
 - le stock de consigne est incrémenté (sur plusieur ligne si plusieur consigne validée)
-- un ticket de reduction est créé
 
-Infos:
+- un seul ticket de reduction est créé
+
+<b>Infos:</b>
 - 2 peers infra (CFT)
 - 3 orderer mode RAFT, network CFT
