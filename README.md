@@ -23,7 +23,7 @@ cd ..<br>
 ./main.sh down
 
 <b>Utilisation :</b><br>
-Le navigatoire doit normalement se lancer. Dans le cas contraire, aller sur : http://localhost:3000 <br>
+Le navigateur doit normalement se lancer. Dans le cas contraire, aller sur : http://localhost:3000 <br>
 
 Deux identifiants sont proposés pour cet environnement :<br> 
 ID: responsable - MDP: pwd<br>
@@ -31,7 +31,7 @@ ID: vendeur - MDP: pwd
 
 <b>Conseil :</b><br>
 Ouvrir deux navigateurs différents pour chaque utilisateur.<br>
-Ainsi, vous aurez possibilité de chercher les codes barres, que vous souhaitez utiliser directement avec le user responsable,
+Ainsi, vous aurez la possibilité de chercher les codes barres que vous souhaitez utiliser, directement avec le user responsable,
 et ajouter les codes barre à la caisse avec le user vendeur.
 
 <b>Fonctionnement de l'app:</b><br>
