@@ -22,8 +22,12 @@ function up () {
     fabric-ca-client affiliation add magasin.vendeur
     "
     docker exec cli /tmp/scripts/doConfig.sh
-    #docker exec cli bash -c "peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"test\"]}'"
-    #return 1
+#     docker exec cli  bash -c "peer chaincode invoke -o orderer0.trappiste-hunter.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/msp/tlscacerts/tlsca.trappiste-hunter.com-cert.pem  -C channel-magasin -n chainecode-trappiste \
+#      -c '{\"Args\":[\"incrementerStock\", \"Biere0\",\"Chimay Bleu\",\"200\", \"123456786\", \"0.18\", \"2.1\"]}' "
+#     sleep 5
+#     docker exec cli bash -c " peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"listerBiere\",\"Biere\",\"Biere~\"]}' "
+# #    docker exec cli bash -c "peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"test\"]}'
+#     return 1
 
     docker exec cli /tmp/scripts/incrementeLedger.sh
     
@@ -36,7 +40,7 @@ function up () {
     
     docker exec cli bash -c " \
     printf '\n'
-    peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"listerBieres\",\"Biere\",\"Biere~\"]}'
+    peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"listerBiere\",\"Biere\",\"Biere~\"]}'
     printf '\n'
     peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"listerVente\",\"Vente\",\"Vente~\"]}'
     "

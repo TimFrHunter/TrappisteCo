@@ -8,7 +8,7 @@ const levelDB = require('../modeles/levelDB')
 
 
 const lister = require('../modeles/lister')
-const incrementer = require('../modeles/incrementer')
+const update = require('../modeles/update')
 const autre = require('../modeles/autre')
 
 
@@ -36,7 +36,7 @@ router.get('/consigne', async (req, res) => {
     if(role != "responsable" ) 
         return res.redirect('/')
     let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
-    let bieresStock = await lister.listerBieres(contrat, "Biere","Biere~")
+    let bieresStock = await lister.listerBiere(contrat, "Biere","Biere~")
     await contrat.gateway.disconnect();
     res.render('stock', {'bieresStock' : bieresStock, "role" : role})
 })
@@ -58,8 +58,8 @@ router.get('/consigne', async (req, res) => {
     let elements = datas.elements
     //global[type](...elements)
     let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
-    await incrementer.incrementerStock(contrat, ...elements)
-    if(type == "incrementerStock") 
+    await update.updateBiere(contrat, ...elements)
+    if(type == "updateBiere") 
         levelDB.correspondanceDB.put(elements[3], elements[0]); //comportement a changer dans le futur
     await contrat.gateway.disconnect();    
     return res.sendStatus(200)

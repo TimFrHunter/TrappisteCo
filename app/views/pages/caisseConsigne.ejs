@@ -53,6 +53,7 @@
   </div>
 
 
+  <%- include('../gadget/loader') %> 
   
   <!-- Script d'Actions-->
 <script type="text/javascript">
@@ -133,16 +134,18 @@
                 })
         })
         $(document).on("click", "#cardCaisseConsigne #validation", () => {
+          $("#loader").show()
           let keys = []
           $(document).find("table#tableCaisseConsigne tbody tr").each(function()  {        
             let $td = $(this).find("td:first-child")
             keys.push([$td.attr('biereid'), $td.attr('quantity'), $(this).find("td:nth-child(3)").html()]) // le dernier c le prix consigne
           })
-          console.log(keys)
+          //console.log(keys)
           $.post("/vendeur/validationConsigne", {'commande' : keys}, () => {
-    
+            $("#loader").hide()
+            window.location.replace("/vendeur/caisse-consigne")
           })
-          window.location.replace("/vendeur/caisse")
+          
         })
     
       // Fonction d'édition

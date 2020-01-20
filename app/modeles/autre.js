@@ -1,5 +1,5 @@
 deleteByKey = async (contract, key) => {
-    let res = await contract.submitTransaction("delete",key);
+    let res = await contract.submitTransaction("deleteByKey",key);
     return res.length == 0 ? true : Buffer.from(res).toString();    
 }
 

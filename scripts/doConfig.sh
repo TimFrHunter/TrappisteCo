@@ -51,7 +51,7 @@ createChannelWithRetry() {
 }
 
 
-printf "\nCreation du channel \n"
+printf "\nCreation du channel, Avec Retry \n"
 createChannelWithRetry orderer0.trappiste-hunter.com:7050 
 printf "\nAjout du peer0.orga1.trappiste-hunter.com au channel, Avec retry\n"
 joinChannelWithRetry 
@@ -68,7 +68,6 @@ printf "\nInstall chaincode\n"
 peer chaincode install -n chainecode-trappiste -v 1.0 -l golang -p github.com/chaincode/
 printf "\nInstantie chaincode\n"
 peer chaincode instantiate -o orderer0.trappiste-hunter.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/msp/tlscacerts/tlsca.trappiste-hunter.com-cert.pem -C channel-magasin -n chainecode-trappiste -l golang -v 1.0 -c '{"Args":["init"]}' -P 'AND ("Orga1MSP.peer")'
-
 sleep 5
 
 

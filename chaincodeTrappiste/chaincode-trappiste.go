@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"crypto/x509"
 	"encoding/json"
 	"strings"
 
@@ -27,9 +26,9 @@ type Biere struct {
 
 type Vente struct {
 	Id          string         `json:"id"`
-	IdReduction string         `json:"idreduction"`
-	Date        int            `json:"date"`       //timestamp format
-	BiereVendu  map[string]int `json:"bierevendu"` //format: {"biere1" : 6, "biere2" : 12}
+	IdReduction string         `json:"idreduction"` // pas utiliser pour l'instant est mis à "" ou "string bidon"
+	Date        int            `json:"date"`        //timestamp format
+	BiereVendu  map[string]int `json:"bierevendu"`  //format: {"biere1" : 6, "biere2" : 12}
 	PrixTotal   float32        `json:"prixtotal"`
 }
 
@@ -61,32 +60,56 @@ func (tc *TrappisteContract) Invoke(stub shim.ChaincodeStubInterface) peer.Respo
 	// Retrieve the requested Smart Contract function and arguments
 	function, args := stub.GetFunctionAndParameters()
 	// Route to the appropriate handler function to interact with the right ledger
-	if function == "incrementerStock" {
-		return tc.incrementerStock(stub, args)
-	} else if function == "afficherBiereUnique" {
-		return tc.afficherBiereUnique(stub, args)
-	} else if function == "listerBieres" {
-		return tc.listerBieres(stub, args)
-	} else if function == "decrementerStock" {
-		return tc.decrementerStock(stub, args)
-	} else if function == "incrementerVente" {
-		return tc.incrementerVente(stub, args)
+	if function == "updateBiere" {
+		if tc.isAdmin(stub) || tc.isResponsable(stub) {
+			return tc.updateBiere(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
+	} else if function == "updateVente" {
+		if tc.isAdmin(stub) || tc.isVendeur(stub) {
+			return tc.updateVente(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
+	} else if function == "updateTicketDeReduction" {
+		if tc.isAdmin(stub) || tc.isVendeur(stub) {
+			return tc.updateTicketDeReduction(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
+	} else if function == "updateConsigne" {
+		if tc.isAdmin(stub) || tc.isVendeur(stub) {
+			return tc.updateConsigne(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
+	} else if function == "listerBiere" {
+		if tc.isAdmin(stub) || tc.isResponsable(stub) || tc.isVendeur(stub) {
+			return tc.listerBiere(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
 	} else if function == "listerVente" {
-		return tc.listerVente(stub, args)
-	} else if function == "incrementerTicketDeReduction" {
-		return tc.incrementerTicketDeReduction(stub, args)
+		if tc.isAdmin(stub) || tc.isResponsable(stub) || tc.isVendeur(stub) {
+			return tc.listerVente(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
 	} else if function == "listerTicketReduction" {
-		return tc.listerTicketReduction(stub, args)
-	} else if function == "desactiverTicketDeReduction" {
-		return tc.desactiverTicketDeReduction(stub, args)
-	} else if function == "incrementerConsigne" {
-		return tc.incrementerConsigne(stub, args)
+		if tc.isAdmin(stub) || tc.isResponsable(stub) || tc.isVendeur(stub) {
+			return tc.listerTicketReduction(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
 	} else if function == "listerConsigne" {
-		return tc.listerConsigne(stub, args)
-	} else if function == "getLastKey" {
-		return tc.getLastKey(stub, args)
-	} else if function == "delete" {
-		return tc.delete(stub, args)
+		if tc.isAdmin(stub) || tc.isResponsable(stub) || tc.isVendeur(stub) {
+			return tc.listerConsigne(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
+	} else if function == "decrementerStock" {
+		if tc.isAdmin(stub) || tc.isVendeur(stub) {
+			return tc.decrementerStock(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
+	} else if function == "deleteByKey" {
+		if tc.isAdmin(stub) || tc.isResponsable(stub) {
+			return tc.delete(stub, args)
+		}
+		return shim.Error("Invalid Trappiste Contract Role Rights.")
 	} else if function == "test" {
 		return tc.test(stub)
 	}
@@ -96,7 +119,7 @@ func (tc *TrappisteContract) Invoke(stub shim.ChaincodeStubInterface) peer.Respo
 /*******************************************************
 	SAVE STRUCT
 ********************************************************/
-func (tc *TrappisteContract) incrementerStock(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+func (tc *TrappisteContract) updateBiere(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 
 	id := args[0]
 	nom := args[1]
@@ -132,7 +155,7 @@ func (tc *TrappisteContract) incrementerStock(stub shim.ChaincodeStubInterface, 
 	return shim.Success(nil)
 }
 
-func (tc *TrappisteContract) incrementerVente(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+func (tc *TrappisteContract) updateVente(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 
 	var vente Vente
 	var biereVendu map[string]int
@@ -155,7 +178,7 @@ func (tc *TrappisteContract) incrementerVente(stub shim.ChaincodeStubInterface, 
 	return shim.Success(nil)
 }
 
-func (tc *TrappisteContract) incrementerConsigne(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+func (tc *TrappisteContract) updateConsigne(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	id := args[0]
 	idBiere := args[1]
 	count, err := strconv.Atoi(args[2])
@@ -177,7 +200,7 @@ func (tc *TrappisteContract) incrementerConsigne(stub shim.ChaincodeStubInterfac
 	return shim.Success(nil)
 }
 
-func (tc *TrappisteContract) incrementerTicketDeReduction(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+func (tc *TrappisteContract) updateTicketDeReduction(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	id := args[0]
 	reductionPrix, err := strconv.ParseFloat(args[1], 32)
 	if err != nil {
@@ -238,7 +261,7 @@ func (tc *TrappisteContract) listerVente(stub shim.ChaincodeStubInterface, args 
 	return shim.Success(buffer.Bytes())
 }
 
-func (tc *TrappisteContract) listerBieres(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+func (tc *TrappisteContract) listerBiere(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	var startRange, endRange string = "Biere", "Biere~" // affiche toute les ventes si aucun param de range n'est donné
 
 	if len(args[0]) >= 1 && len(args[1]) >= 1 { //use user's params range
@@ -314,63 +337,6 @@ func (tc *TrappisteContract) decrementerStock(stub shim.ChaincodeStubInterface, 
 	return shim.Success(nil)
 }
 
-func (tc *TrappisteContract) afficherBiereUnique(stub shim.ChaincodeStubInterface, args []string) peer.Response {
-
-	biereAsBytes, err := stub.GetState(args[0])
-	if err != nil {
-		return shim.Error(err.Error())
-	} else if biereAsBytes == nil {
-		return shim.Error("L'id biere n'existe pas")
-	}
-
-	return shim.Success(biereAsBytes)
-}
-
-func (tc *TrappisteContract) desactiverTicketDeReduction(stub shim.ChaincodeStubInterface, args []string) peer.Response {
-	id := args[0] // Id Ticket reduction
-	ticketReducAsBytes, err := stub.GetState(id)
-	if err != nil {
-		return shim.Error(err.Error())
-	} else if ticketReducAsBytes == nil {
-		return shim.Error("L'id TicketReduc n'existe pas")
-	}
-	ticketReduc := TicketReduction{}
-
-	err = json.Unmarshal(ticketReducAsBytes, &ticketReduc)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	ticketReduc.IsEnabled = false                       // ICI ON désactive
-	ticketReducAsBytes, err = json.Marshal(ticketReduc) //encode
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-
-	err = stub.PutState(id, ticketReducAsBytes) //write in ledger (key, value) aka (id, structData)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-
-	return shim.Success(nil)
-}
-
-func (tc *TrappisteContract) getLastKey(stub shim.ChaincodeStubInterface, args []string) peer.Response {
-	//args[0] doit etre du type Biere/Vente/Etc..
-	i := 0
-	iter, err := stub.GetStateByRange(args[0], "")
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	for iter.HasNext() {
-		i++
-		iter.Next()
-	}
-	if i > 0 {
-		i--
-	}
-	return shim.Success([]byte(strconv.Itoa(i)))
-}
-
 /********************************************************
 	PRIVATE
 *********************************************************/
@@ -412,35 +378,23 @@ func (tc *TrappisteContract) lister(stub shim.ChaincodeStubInterface, startRange
 }
 
 func (tc *TrappisteContract) test(stub shim.ChaincodeStubInterface) peer.Response {
-	// Get the client ID object
-	idClient, err := cid.New(stub)
-	if err != nil {
-		return shim.Error("err une")
-	}
-	// mspid, err := idClient.GetMSPID()
-	// if err != nil {
-	// 	return shim.Error("err deux")
-	// }
-	cert, _ := idClient.GetX509Certificate()
 
-	val := tc.isAdmin(cert)
-	if val {
+	bl := tc.isAdmin(stub)
+	if bl {
 		return shim.Success([]byte("true"))
 	}
-
 	return shim.Success([]byte("false"))
-	// switch mspid {
-	// 	case "org1MSP":
-	// 		err = id.AssertAttributeValue("attr1", "true")
-	// 	case "org2MSP":
-	// 		err = id.AssertAttributeValue("attr2", "true")
-	// 	default:
-	// 		err = errors.New("Wrong MSP")
-	// }
-	//return shim.Success([]byte(id))
 }
 
-func (tc *TrappisteContract) isAdmin(cert *x509.Certificate) bool {
+func (tc *TrappisteContract) isAdmin(stub shim.ChaincodeStubInterface) bool {
+	idClient, err := cid.New(stub)
+	if err != nil {
+		return false
+	}
+	cert, err := idClient.GetX509Certificate()
+	if err != nil {
+		return false
+	}
 	x := cert.Subject.ToRDNSequence().String()
 	startIdx := strings.Index(x, "OU=") + 3
 
@@ -451,6 +405,33 @@ func (tc *TrappisteContract) isAdmin(cert *x509.Certificate) bool {
 			if ouRole == "admin" {
 				return true
 			}
+		}
+	}
+	return false
+}
+
+func (tc *TrappisteContract) isVendeur(stub shim.ChaincodeStubInterface) bool {
+	return tc.checkAffiliation(stub, "Orga1MSP", "magasin.vendeur")
+}
+
+func (tc *TrappisteContract) isResponsable(stub shim.ChaincodeStubInterface) bool {
+	return tc.checkAffiliation(stub, "Orga1MSP", "magasin.responsable")
+}
+
+func (tc *TrappisteContract) checkAffiliation(stub shim.ChaincodeStubInterface, _mspId string, _affiliation string) bool {
+
+	// Get the client ID object
+	id, err := cid.New(stub)
+	if err != nil {
+		return false
+	}
+	mspid, err := id.GetMSPID()
+	if err != nil {
+		return false
+	}
+	if mspid == _mspId {
+		if id.AssertAttributeValue("hf.Affiliation", _affiliation) == nil {
+			return true
 		}
 	}
 	return false
