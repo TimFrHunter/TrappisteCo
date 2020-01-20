@@ -110,9 +110,9 @@ func (tc *TrappisteContract) Invoke(stub shim.ChaincodeStubInterface) peer.Respo
 			return tc.delete(stub, args)
 		}
 		return shim.Error("Invalid Trappiste Contract Role Rights.")
-	} else if function == "test" {
+	} /*else if function == "test" {
 		return tc.test(stub)
-	}
+	}*/
 	return shim.Error("Invalid Trappiste Contract function name.")
 }
 
@@ -377,14 +377,14 @@ func (tc *TrappisteContract) lister(stub shim.ChaincodeStubInterface, startRange
 	return buffer, nil
 }
 
-func (tc *TrappisteContract) test(stub shim.ChaincodeStubInterface) peer.Response {
+// func (tc *TrappisteContract) test(stub shim.ChaincodeStubInterface) peer.Response {
 
-	bl := tc.isAdmin(stub)
-	if bl {
-		return shim.Success([]byte("true"))
-	}
-	return shim.Success([]byte("false"))
-}
+// 	bl := tc.isAdmin(stub)
+// 	if bl {
+// 		return shim.Success([]byte("true"))
+// 	}
+// 	return shim.Success([]byte("false"))
+// }
 
 func (tc *TrappisteContract) isAdmin(stub shim.ChaincodeStubInterface) bool {
 	idClient, err := cid.New(stub)
