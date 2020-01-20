@@ -58,7 +58,7 @@ router.get('/consigne', async (req, res) => {
     let elements = datas.elements
     //global[type](...elements)
     let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
-    incrementer.incrementerStock(contrat, ...elements)
+    await incrementer.incrementerStock(contrat, ...elements)
     if(type == "incrementerStock") 
         levelDB.correspondanceDB.put(elements[3], elements[0]); //comportement a changer dans le futur
     await contrat.gateway.disconnect();    
@@ -73,7 +73,7 @@ router.get('/consigne', async (req, res) => {
     //let type = datas.type
     //global[type](key)
     let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
-    autre.deleteByKey(contrat, key)
+    await autre.deleteByKey(contrat, key)
     await contrat.gateway.disconnect();
     return res.sendStatus(200)
 })
