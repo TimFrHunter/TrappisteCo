@@ -57,7 +57,7 @@ func (tfc *TFContract) putProduit(stub shim.ChaincodeStubInterface, args []strin
 	var biereNom string = args[1]
 	var prixParQuantite map[int]interface{}
 
-	err := json.Unmarshal([]byte(args[2]), &prixParQuantite) //"{\"1\" : \"2;3\", \"100\" : \"2.1\"}" etc..
+	err := json.Unmarshal([]byte(args[2]), &prixParQuantite) //"{\"1\" : \"2.3\", \"100\" : \"2.1\"}" etc..
 	if err != nil {
 		return shim.Error(err.Error())
 	}

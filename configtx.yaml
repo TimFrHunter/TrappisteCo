@@ -42,13 +42,13 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('chimayMSP.admin','chimayMSP.peer', 'chimayMSP.client')"
+                Rule: "OR('ChimayMSP.admin','ChimayMSP.peer', 'ChimayMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('chimayMSP.admin', 'chimayMSP.client')"
+                Rule: "OR('ChimayMSP.admin', 'ChimayMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "Or('chimayMSP.admin')"
+                Rule: "Or('ChimayMSP.admin')"
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only

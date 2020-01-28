@@ -175,9 +175,28 @@ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/pee
 export CORE_PEER_ADDRESS=peer0.magasin.trappiste.fr:7051
 export CORE_PEER_LOCALMSPID="MagasinMSP"
 export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/magasin.trappiste.fr/peers/peer0.magasin.trappiste.fr/tls/ca.crt
-printf "\nInstantie chaincode trappiste\n"
+printf "\nInstantie chaincode trappiste for Magasin Org\n"
 peer chaincode instantiate -o orderer0.trappiste.fr:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste.fr/orderers/orderer0.trappiste.fr/msp/tlscacerts/tlsca.trappiste.fr-cert.pem -C $CHANNEL_NAME_1 -n $CC_1 -l golang -v 1.0 -c '{"Args":["init"]}' -P 'AND ("MagasinMSP.peer")'
 sleep 5
-printf "\nInstantie chaincode trappiste fournisseur\n"
+printf "\nInstantie chaincode trappiste fournisseur for Magasin Org\n"
 peer chaincode instantiate -o orderer0.trappiste.fr:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste.fr/orderers/orderer0.trappiste.fr/msp/tlscacerts/tlsca.trappiste.fr-cert.pem -C $CHANNEL_NAME_2 -n $CC_2 -l golang -v 1.0 -c '{"Args":["init"]}' -P 'AND ("MagasinMSP.peer", "ChimayMSP.peer")'
 sleep 5
+
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/chimay.fournisseur.be/users/Admin@chimay.fournisseur.be/msp
+export CORE_PEER_ADDRESS=peer0.chimay.fournisseur.be:1001
+export CORE_PEER_LOCALMSPID="ChimayMSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/chimay.fournisseur.be/peers/peer0.chimay.fournisseur.be/tls/ca.crt
+# export CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/chimay.fournisseur.be/peers/peer0.chimay.fournisseur.be/tls/server.key
+# export CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/chimay.fournisseur.be/peers/peer0.chimay.fournisseur.be/tls/server.crt
+printf "\nInstantie chaincode trappiste fournisseur for Chimay Org\n"
+peer chaincode instantiate -o orderer0.trappiste.fr:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste.fr/orderers/orderer0.trappiste.fr/msp/tlscacerts/tlsca.trappiste.fr-cert.pem -C $CHANNEL_NAME_2 -n $CC_2 -l golang -v 1.0 -c '{"Args":["init"]}' -P 'AND ("MagasinMSP.peer", "ChimayMSP.peer")'
+sleep 5
+
+
+
+ peer chaincode invoke -o orderer0.trappiste.fr:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste.fr/orderers/orderer0.trappiste.fr/msp/tlscacerts/tlsca.trappiste.fr-cert.pem  -C channel-magasin-chimay -n chaincode-trappiste-fournisseur -c '{"Args":["putProduit", "Produit01", "Orval", "{\"1\" : \"2.5\",\"100\" : \"2.2\"}" ]}' --peerAddresses peer0.magasin.trappiste.fr:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/magasin.trappiste.fr/peers/peer0.magasin.trappiste.fr/tls/ca.crt --peerAddresses peer0.chimay.fournisseur.be:1001 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/chimay.fournisseur.be/peers/peer0.chimay.fournisseur.be/tls/ca.crt
+
+
+
+peer chaincode query -C channel-magasin-chimay -n chaincode-trappiste-fournisseur -c '{"Args":["getByKey","Produit01"]}'
+

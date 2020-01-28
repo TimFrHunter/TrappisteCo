@@ -26,7 +26,7 @@ services:
     container_name: orderer0.trappiste.fr
     environment:
       - ORDERER_GENERAL_LISTENPORT=7050
-      - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_LOGGING_SPEC=ERROR
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
@@ -59,7 +59,7 @@ services:
     container_name: orderer1.trappiste.fr
     environment:
       - ORDERER_GENERAL_LISTENPORT=8050
-      - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_LOGGING_SPEC=ERROR
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
@@ -93,7 +93,7 @@ services:
     container_name: orderer2.trappiste.fr
     environment:
       - ORDERER_GENERAL_LISTENPORT=9050
-      - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_LOGGING_SPEC=ERROR
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
@@ -134,8 +134,8 @@ services:
       #ChaineCode
       - CORE_PEER_CHAINCODEADDRESS=peer0.magasin.trappiste.fr:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-      - CORE_CHAINCODE_LOGGING_SHIM=INFO
-      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      - CORE_CHAINCODE_LOGGING_SHIM=ERROR
+      - CORE_CHAINCODE_LOGGING_LEVEL=ERROR
       #GOSSIP
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.magasin.trappiste.fr:7061
       #- CORE_PEER_GOSSIP_ENDPOINT=peer0.magasin.trappiste.fr:7051
@@ -148,8 +148,8 @@ services:
       #VM
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_trappiste-network #important le _trappiste-network sinon le chainecode marche pas
-      #INFO
-      - FABRIC_LOGGING_SPEC=INFO
+      #ERROR
+      - FABRIC_LOGGING_SPEC=ERROR
       #TLS
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
@@ -178,8 +178,8 @@ services:
       #ChaineCode
       - CORE_PEER_CHAINCODEADDRESS=peer1.magasin.trappiste.fr:7062
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7062
-      - CORE_CHAINCODE_LOGGING_SHIM=INFO
-      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      - CORE_CHAINCODE_LOGGING_SHIM=ERROR
+      - CORE_CHAINCODE_LOGGING_LEVEL=ERROR
       #GOSSIP
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.magasin.trappiste.fr:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.magasin.trappiste.fr:7061
@@ -191,8 +191,8 @@ services:
       #VM
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_trappiste-network #important le _trappiste-network sinon le chainecode marche pas
-      #INFO
-      - FABRIC_LOGGING_SPEC=INFO
+      #ERROR
+      - FABRIC_LOGGING_SPEC=ERROR
       #TLS
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
@@ -218,8 +218,8 @@ services:
       - SYS_CHANNEL=$SYS_CHANNEL
       - GOPATH=/opt/gopath
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - FABRIC_LOGGING_SPEC=INFO #Carreful in production have to comment it
-      #- FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_LOGGING_SPEC=ERROR #Carreful in production have to comment it
+      #- FABRIC_LOGGING_SPEC=ERROR
       - CORE_PEER_ID=cli
       - CORE_PEER_ADDRESS=peer0.magasin.trappiste.fr:7051
       - CORE_PEER_LOCALMSPID=MagasinMSP
@@ -245,7 +245,7 @@ services:
       image: hyperledger/fabric-ca:$IMAGE_TAG
       environment:
         - FABRIC_CA_SERVER_CA_NAME=ca.magasin.trappiste.fr  #ca0_orga1
-        - FABRIC_LOGGING_SPEC=INFO
+        - FABRIC_LOGGING_SPEC=ERROR
         - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
         
         - FABRIC_CA_SERVER_TLS_ENABLED=true
@@ -277,8 +277,8 @@ services:
       #ChaineCode
       - CORE_PEER_CHAINCODEADDRESS=peer0.chimay.fournisseur.be:1002
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:1002
-      - CORE_CHAINCODE_LOGGING_SHIM=INFO
-      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      - CORE_CHAINCODE_LOGGING_SHIM=ERROR
+      - CORE_CHAINCODE_LOGGING_LEVEL=ERROR
       #GOSSIP
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.chimay.fournisseur.be:1011
       #- CORE_PEER_GOSSIP_ENDPOINT=peer0.chimay.fournisseur.be:1001
@@ -291,8 +291,8 @@ services:
       #VM
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_trappiste-network #important le _trappiste-network sinon le chainecode marche pas
-      #INFO
-      - FABRIC_LOGGING_SPEC=INFO
+      #ERROR
+      - FABRIC_LOGGING_SPEC=ERROR
       #TLS
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
@@ -321,8 +321,8 @@ services:
       #ChaineCode
       - CORE_PEER_CHAINCODEADDRESS=peer1.chimay.fournisseur.be:1012
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:1012
-      - CORE_CHAINCODE_LOGGING_SHIM=INFO
-      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      - CORE_CHAINCODE_LOGGING_SHIM=ERROR
+      - CORE_CHAINCODE_LOGGING_LEVEL=ERROR
       #GOSSIP
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.chimay.fournisseur.be:1001
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.chimay.fournisseur.be:1011
@@ -334,8 +334,8 @@ services:
       #VM
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_trappiste-network #important le _trappiste-network sinon le chainecode marche pas
-      #INFO
-      - FABRIC_LOGGING_SPEC=INFO
+      #ERROR
+      - FABRIC_LOGGING_SPEC=ERROR
       #TLS
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
