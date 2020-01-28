@@ -1,6 +1,6 @@
 OrdererOrgs:
   - Name: Orderer
-    Domain: trappiste-hunter.com
+    Domain: trappiste.fr
     EnableNodeOUs: true
     Specs:
       - Hostname: orderer0
@@ -8,10 +8,18 @@ OrdererOrgs:
       - Hostname: orderer2
 
 PeerOrgs:
-  - Name: Orga1
-    Domain: orga1.trappiste-hunter.com
+  - Name: Magasin
+    Domain: magasin.trappiste.fr
     EnableNodeOUs: true
     Template:
       Count: 2
     Users: 
-      Count: 1
+      Count: 0
+      
+  - Name: Chimay
+    Domain: chimay.fournisseur.be
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users: 
+      Count: 0

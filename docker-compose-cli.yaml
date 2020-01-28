@@ -7,21 +7,23 @@
 version: '2'
 
 volumes:
-  orderer0.trappiste-hunter.com:
-  orderer1.trappiste-hunter.com:
-  orderer2.trappiste-hunter.com:
-  peer0.orga1.trappiste-hunter.com:
-  peer1.orga1.trappiste-hunter.com:
+  orderer0.trappiste.fr:
+  orderer1.trappiste.fr:
+  orderer2.trappiste.fr:
+  peer0.magasin.trappiste.fr:
+  peer1.magasin.trappiste.fr:
+  peer0.chimay.fournisseur.be:
+  peer1.chimay.fournisseur.be:
 
 networks:
   trappiste-network:
 
 services:
 
-  orderer0.trappiste-hunter.com:
+  orderer0.trappiste.fr:
     image: hyperledger/fabric-orderer:$IMAGE_TAG
     command: orderer
-    container_name: orderer0.trappiste-hunter.com
+    container_name: orderer0.trappiste.fr
     environment:
       - ORDERER_GENERAL_LISTENPORT=7050
       - FABRIC_LOGGING_SPEC=INFO
@@ -44,17 +46,17 @@ services:
       - trappiste-network
     volumes:
       - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/msp:/var/hyperledger/orderer/msp
-      - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/tls/:/var/hyperledger/orderer/tls
-      - orderer0.trappiste-hunter.com:/var/hyperledger/production/orderer
+      - ./crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer0.trappiste.fr/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer0.trappiste.fr/tls/:/var/hyperledger/orderer/tls
+      - orderer0.trappiste.fr:/var/hyperledger/production/orderer
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     ports:
       - 7050:7050    
 
-  orderer1.trappiste-hunter.com:
+  orderer1.trappiste.fr:
     image: hyperledger/fabric-orderer:$IMAGE_TAG
     command: orderer
-    container_name: orderer1.trappiste-hunter.com
+    container_name: orderer1.trappiste.fr
     environment:
       - ORDERER_GENERAL_LISTENPORT=8050
       - FABRIC_LOGGING_SPEC=INFO
@@ -76,19 +78,19 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     volumes:
         - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-        - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer1.trappiste-hunter.com/msp:/var/hyperledger/orderer/msp
-        - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer1.trappiste-hunter.com/tls/:/var/hyperledger/orderer/tls
-        - orderer1.trappiste-hunter.com:/var/hyperledger/production/orderer
+        - ./crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer1.trappiste.fr/msp:/var/hyperledger/orderer/msp
+        - ./crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer1.trappiste.fr/tls/:/var/hyperledger/orderer/tls
+        - orderer1.trappiste.fr:/var/hyperledger/production/orderer
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     ports:
       - 8050:8050        
     networks:
       - trappiste-network
 
-  orderer2.trappiste-hunter.com:
+  orderer2.trappiste.fr:
     image: hyperledger/fabric-orderer:$IMAGE_TAG
     command: orderer
-    container_name: orderer2.trappiste-hunter.com
+    container_name: orderer2.trappiste.fr
     environment:
       - ORDERER_GENERAL_LISTENPORT=9050
       - FABRIC_LOGGING_SPEC=INFO
@@ -111,38 +113,38 @@ services:
       - trappiste-network
     volumes:
       - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer2.trappiste-hunter.com/msp:/var/hyperledger/orderer/msp
-      - ./crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer2.trappiste-hunter.com/tls/:/var/hyperledger/orderer/tls
-      - orderer2.trappiste-hunter.com:/var/hyperledger/production/orderer
+      - ./crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer2.trappiste.fr/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer2.trappiste.fr/tls/:/var/hyperledger/orderer/tls
+      - orderer2.trappiste.fr:/var/hyperledger/production/orderer
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     ports:
       - 9050:9050    
 
 
 
-  peer0.orga1.trappiste-hunter.com:
+  peer0.magasin.trappiste.fr:
     image: hyperledger/fabric-peer:$IMAGE_TAG
     command: peer node start  
-    container_name: peer0.orga1.trappiste-hunter.com
+    container_name: peer0.magasin.trappiste.fr
     environment:
       - CORE_PEER_PROFILE_ENABLED=true
-      - CORE_PEER_ID=peer0.orga1.trappiste-hunter.com
-      - CORE_PEER_ADDRESS=peer0.orga1.trappiste-hunter.com:7051
+      - CORE_PEER_ID=peer0.magasin.trappiste.fr
+      - CORE_PEER_ADDRESS=peer0.magasin.trappiste.fr:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
       #ChaineCode
-      - CORE_PEER_CHAINCODEADDRESS=peer0.orga1.trappiste-hunter.com:7052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.magasin.trappiste.fr:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
       - CORE_CHAINCODE_LOGGING_SHIM=INFO
       - CORE_CHAINCODE_LOGGING_LEVEL=INFO
       #GOSSIP
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.orga1.trappiste-hunter.com:7061
-      #- CORE_PEER_GOSSIP_ENDPOINT=peer0.orga1.trappiste-hunter.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orga1.trappiste-hunter.com:7051 ## utile pour trouver un peer depuis une app sinon avec l'app je peux pas me connecter :/
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.magasin.trappiste.fr:7061
+      #- CORE_PEER_GOSSIP_ENDPOINT=peer0.magasin.trappiste.fr:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.magasin.trappiste.fr:7051 ## utile pour trouver un peer depuis une app sinon avec l'app je peux pas me connecter :/
       
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       #MSPid
-      - CORE_PEER_LOCALMSPID=Orga1MSP
+      - CORE_PEER_LOCALMSPID=MagasinMSP
       #VM
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_trappiste-network #important le _trappiste-network sinon le chainecode marche pas
@@ -156,36 +158,36 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     volumes:
         - /var/run/:/host/var/run/
-        - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer0.orga1.trappiste-hunter.com/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer0.orga1.trappiste-hunter.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.orga1.trappiste-hunter.com:/var/hyperledger/production
+        - ./crypto-config/peerOrganizations/magasin.trappiste.fr/peers/peer0.magasin.trappiste.fr/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/magasin.trappiste.fr/peers/peer0.magasin.trappiste.fr/tls:/etc/hyperledger/fabric/tls
+        - peer0.magasin.trappiste.fr:/var/hyperledger/production
     networks:
       - trappiste-network
     ports:
       - 7051:7051   
 
-  peer1.orga1.trappiste-hunter.com:
+  peer1.magasin.trappiste.fr:
     image: hyperledger/fabric-peer:$IMAGE_TAG
     command: peer node start  
-    container_name: peer1.orga1.trappiste-hunter.com
+    container_name: peer1.magasin.trappiste.fr
     environment:
       - CORE_PEER_PROFILE_ENABLED=true
-      - CORE_PEER_ID=peer1.orga1.trappiste-hunter.com
-      - CORE_PEER_ADDRESS=peer1.orga1.trappiste-hunter.com:7061
+      - CORE_PEER_ID=peer1.magasin.trappiste.fr
+      - CORE_PEER_ADDRESS=peer1.magasin.trappiste.fr:7061
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7061
       #ChaineCode
-      - CORE_PEER_CHAINCODEADDRESS=peer1.orga1.trappiste-hunter.com:7062
+      - CORE_PEER_CHAINCODEADDRESS=peer1.magasin.trappiste.fr:7062
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7062
       - CORE_CHAINCODE_LOGGING_SHIM=INFO
       - CORE_CHAINCODE_LOGGING_LEVEL=INFO
       #GOSSIP
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orga1.trappiste-hunter.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.orga1.trappiste-hunter.com:7061
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.magasin.trappiste.fr:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.magasin.trappiste.fr:7061
       
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       #MSPid
-      - CORE_PEER_LOCALMSPID=Orga1MSP
+      - CORE_PEER_LOCALMSPID=MagasinMSP
       #VM
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_trappiste-network #important le _trappiste-network sinon le chainecode marche pas
@@ -199,9 +201,9 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     volumes:
         - /var/run/:/host/var/run/
-        - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer1.orga1.trappiste-hunter.com/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/peers/peer1.orga1.trappiste-hunter.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.orga1.trappiste-hunter.com:/var/hyperledger/production
+        - ./crypto-config/peerOrganizations/magasin.trappiste.fr/peers/peer1.magasin.trappiste.fr/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/magasin.trappiste.fr/peers/peer1.magasin.trappiste.fr/tls:/etc/hyperledger/fabric/tls
+        - peer1.magasin.trappiste.fr:/var/hyperledger/production
     networks:
       - trappiste-network
     ports:
@@ -219,18 +221,19 @@ services:
       - FABRIC_LOGGING_SPEC=INFO #Carreful in production have to comment it
       #- FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=peer0.orga1.trappiste-hunter.com:7051
-      - CORE_PEER_LOCALMSPID=Orga1MSP
+      - CORE_PEER_ADDRESS=peer0.magasin.trappiste.fr:7051
+      - CORE_PEER_LOCALMSPID=MagasinMSP
       - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orga1.trappiste-hunter.com/peers/peer0.orga1.trappiste-hunter.com/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orga1.trappiste-hunter.com/peers/peer0.orga1.trappiste-hunter.com/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orga1.trappiste-hunter.com/peers/peer0.orga1.trappiste-hunter.com/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orga1.trappiste-hunter.com/users/Admin@orga1.trappiste-hunter.com/msp
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/magasin.trappiste.fr/peers/peer0.magasin.trappiste.fr/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/magasin.trappiste.fr/peers/peer0.magasin.trappiste.fr/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/magasin.trappiste.fr/peers/peer0.magasin.trappiste.fr/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/magasin.trappiste.fr/users/Admin@magasin.trappiste.fr/msp
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes:
         - /var/run/:/host/var/run/
         - ./chaincodeTrappiste/:/opt/gopath/src/github.com/chaincode
+        - ./chaincodeTrappisteFournisseur/:/opt/gopath/src/github.com/chaincode-fournisseur
         - ./chaincodeTrappisteDependance/:/opt/go/src/github.com/hyperledger/fabric/core/chaincode/shim/ext/ 
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
@@ -241,21 +244,110 @@ services:
   ca0:
       image: hyperledger/fabric-ca:$IMAGE_TAG
       environment:
-        - FABRIC_CA_SERVER_CA_NAME=ca.orga1.trappiste-hunter.com  #ca0_orga1
+        - FABRIC_CA_SERVER_CA_NAME=ca.magasin.trappiste.fr  #ca0_orga1
         - FABRIC_LOGGING_SPEC=INFO
         - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
         
         - FABRIC_CA_SERVER_TLS_ENABLED=true
-        - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.orga1.trappiste-hunter.com-cert.pem
-        # se trouve dans : crypto-config/peerOrganizations/orga1.trappiste-hunter.com/ca/
+        - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.magasin.trappiste.fr-cert.pem
+        # se trouve dans : crypto-config/peerOrganizations/orga1.trappiste.fr/ca/
         - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/${CA1_PRIVATE_KEY}
         - FABRIC_CA_SERVER_PORT=7054
-        - FABRIC_CA_CLIENT_TLS_CERTFILES=/etc/hyperledger/fabric-ca-server-config/ca.orga1.trappiste-hunter.com-cert.pem
+        - FABRIC_CA_CLIENT_TLS_CERTFILES=/etc/hyperledger/fabric-ca-server-config/ca.magasin.trappiste.fr-cert.pem
       ports:
         - "7054:7054"
-      command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.orga1.trappiste-hunter.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${CA1_PRIVATE_KEY} -b admin:adminpw -d'
+      command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.magasin.trappiste.fr-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${CA1_PRIVATE_KEY} -b admin:adminpw -d'
       volumes:
-        - ./crypto-config/peerOrganizations/orga1.trappiste-hunter.com/ca/:/etc/hyperledger/fabric-ca-server-config
-      container_name: ca.orga1.trappiste-hunter.com 
+        - ./crypto-config/peerOrganizations/magasin.trappiste.fr/ca/:/etc/hyperledger/fabric-ca-server-config
+      container_name: ca.magasin.trappiste.fr 
       networks:
         - trappiste-network      
+
+#############   FOURNISSEUR   #################
+
+  peer0.chimay.fournisseur.be:
+    image: hyperledger/fabric-peer:$IMAGE_TAG
+    command: peer node start  
+    container_name: peer0.chimay.fournisseur.be
+    environment:
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_ID=peer0.chimay.fournisseur.be
+      - CORE_PEER_ADDRESS=peer0.chimay.fournisseur.be:1001
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:1001
+      #ChaineCode
+      - CORE_PEER_CHAINCODEADDRESS=peer0.chimay.fournisseur.be:1002
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:1002
+      - CORE_CHAINCODE_LOGGING_SHIM=INFO
+      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      #GOSSIP
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.chimay.fournisseur.be:1011
+      #- CORE_PEER_GOSSIP_ENDPOINT=peer0.chimay.fournisseur.be:1001
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.chimay.fournisseur.be:1001 ## utile pour trouver un peer depuis une app sinon avec l'app je peux pas me connecter :/
+      
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      #MSPid
+      - CORE_PEER_LOCALMSPID=ChimayMSP
+      #VM
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_trappiste-network #important le _trappiste-network sinon le chainecode marche pas
+      #INFO
+      - FABRIC_LOGGING_SPEC=INFO
+      #TLS
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/chimay.fournisseur.be/peers/peer0.chimay.fournisseur.be/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/chimay.fournisseur.be/peers/peer0.chimay.fournisseur.be/tls:/etc/hyperledger/fabric/tls
+        - peer0.chimay.fournisseur.be:/var/hyperledger/production
+    networks:
+      - trappiste-network
+    ports:
+      - 1001:1001   
+
+  peer1.chimay.fournisseur.be:
+    image: hyperledger/fabric-peer:$IMAGE_TAG
+    command: peer node start  
+    container_name: peer1.chimay.fournisseur.be
+    environment:
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_ID=peer1.chimay.fournisseur.be
+      - CORE_PEER_ADDRESS=peer1.chimay.fournisseur.be:1011
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:1011
+      #ChaineCode
+      - CORE_PEER_CHAINCODEADDRESS=peer1.chimay.fournisseur.be:1012
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:1012
+      - CORE_CHAINCODE_LOGGING_SHIM=INFO
+      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      #GOSSIP
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.chimay.fournisseur.be:1001
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.chimay.fournisseur.be:1011
+      
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      #MSPid
+      - CORE_PEER_LOCALMSPID=ChimayMSP
+      #VM
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_trappiste-network #important le _trappiste-network sinon le chainecode marche pas
+      #INFO
+      - FABRIC_LOGGING_SPEC=INFO
+      #TLS
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/chimay.fournisseur.be/peers/peer1.chimay.fournisseur.be/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/chimay.fournisseur.be/peers/peer1.chimay.fournisseur.be/tls:/etc/hyperledger/fabric/tls
+        - peer1.chimay.fournisseur.be:/var/hyperledger/production
+    networks:
+      - trappiste-network
+    ports:
+      - 1011:1011  

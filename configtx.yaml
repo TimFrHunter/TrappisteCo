@@ -3,7 +3,7 @@ Organizations:
     - &OrdererOrg
         Name: OrdererOrg
         ID: OrdererMSP
-        MSPDir: crypto-config/ordererOrganizations/trappiste-hunter.com/msp
+        MSPDir: crypto-config/ordererOrganizations/trappiste.fr/msp
         Policies:
             Readers:    
                 Type: Signature
@@ -14,26 +14,47 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "Or('OrdererMSP.admin')"
-    - &Org1
-        Name: Orga1
-        ID: Orga1MSP
-        MSPDir: crypto-config/peerOrganizations/orga1.trappiste-hunter.com/msp
+    - &Magasin
+        Name: Magasin
+        ID: MagasinMSP
+        MSPDir: crypto-config/peerOrganizations/magasin.trappiste.fr/msp
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Orga1MSP.admin','Orga1MSP.peer', 'Orga1MSP.client')"
+                Rule: "OR('MagasinMSP.admin','MagasinMSP.peer', 'MagasinMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Orga1MSP.admin', 'Orga1MSP.client')"
+                Rule: "OR('MagasinMSP.admin', 'MagasinMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "Or('Orga1MSP.admin')"
+                Rule: "Or('MagasinMSP.admin')"
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.orga1.trappiste-hunter.com
-              Port: 7051        
+            - Host: peer0.magasin.trappiste.fr
+              Port: 7051  
+
+    - &Chimay
+        Name: Chimay
+        ID: ChimayMSP
+        MSPDir: crypto-config/peerOrganizations/chimay.fournisseur.be/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('chimayMSP.admin','chimayMSP.peer', 'chimayMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('chimayMSP.admin', 'chimayMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "Or('chimayMSP.admin')"
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.chimay.fournisseur.be
+              Port: 1001        
 
 
 Capabilities:
@@ -155,23 +176,23 @@ Profiles:
             OrdererType: etcdraft
             EtcdRaft:
                 Consenters:
-                - Host: orderer0.trappiste-hunter.com
+                - Host: orderer0.trappiste.fr
                   Port: 7050
-                  ClientTLSCert: crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/tls/server.crt
-                - Host: orderer1.trappiste-hunter.com
+                  ClientTLSCert: crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer0.trappiste.fr/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer0.trappiste.fr/tls/server.crt
+                - Host: orderer1.trappiste.fr
                   Port: 8050
-                  ClientTLSCert: crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer1.trappiste-hunter.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer1.trappiste-hunter.com/tls/server.crt
-                - Host: orderer2.trappiste-hunter.com
+                  ClientTLSCert: crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer1.trappiste.fr/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer1.trappiste.fr/tls/server.crt
+                - Host: orderer2.trappiste.fr
                   Port: 9050
-                  ClientTLSCert: crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer2.trappiste-hunter.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/trappiste-hunter.com/orderers/orderer2.trappiste-hunter.com/tls/server.crt
+                  ClientTLSCert: crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer2.trappiste.fr/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/trappiste.fr/orderers/orderer2.trappiste.fr/tls/server.crt
                
             Addresses:
-                - orderer0.trappiste-hunter.com:7050
-                - orderer1.trappiste-hunter.com:8050
-                - orderer2.trappiste-hunter.com:9050
+                - orderer0.trappiste.fr:7050
+                - orderer1.trappiste.fr:8050
+                - orderer2.trappiste.fr:9050
 
             Organizations:
                 - *OrdererOrg
@@ -184,7 +205,11 @@ Profiles:
         Consortiums:
             UniqueConsortium:
                 Organizations:
-                  - *Org1   
+                  - *Magasin   
+            MagasinChimayConsortium:
+                Organizations:
+                  - *Magasin 
+                  - *Chimay  
 
     ChannelMagasin:
         Consortium: UniqueConsortium
@@ -192,7 +217,18 @@ Profiles:
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Org1
+                - *Magasin
+            Capabilities:
+                <<: *ApplicationCapabilities 
+
+    ChannelMagasinChimay:
+        Consortium: MagasinChimayConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Magasin
+                - *Chimay
             Capabilities:
                 <<: *ApplicationCapabilities                  
                      

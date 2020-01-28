@@ -13,15 +13,20 @@ function down() {
 }
 
 function up () {
-    down
-    docker-compose -f docker-compose-cli.yaml up -d 2>&1
-    docker exec ca.orga1.trappiste-hunter.com bash -c " \
-    fabric-ca-client enroll -u https://admin:adminpw@ca.orga1.trappiste-hunter.com:7054
-    fabric-ca-client affiliation add magasin 
-    fabric-ca-client affiliation add magasin.responsable 
-    fabric-ca-client affiliation add magasin.vendeur
-    "
+    #down
+   # docker-compose -f docker-compose-cli.yaml up -d 2>&1
+    
+    # docker exec ca.orga1.trappiste-hunter.com bash -c " \
+    # fabric-ca-client enroll -u https://admin:adminpw@ca.orga1.trappiste-hunter.com:7054
+    # fabric-ca-client affiliation add magasin 
+    # fabric-ca-client affiliation add magasin.responsable 
+    # fabric-ca-client affiliation add magasin.vendeur
+    # "
     docker exec cli /tmp/scripts/doConfig.sh
+
+    return 1 
+
+
 #     docker exec cli  bash -c "peer chaincode invoke -o orderer0.trappiste-hunter.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/msp/tlscacerts/tlsca.trappiste-hunter.com-cert.pem  -C channel-magasin -n chainecode-trappiste \
 #      -c '{\"Args\":[\"incrementerStock\", \"Biere0\",\"Chimay Bleu\",\"200\", \"123456786\", \"0.18\", \"2.1\"]}' "
 #     sleep 5
