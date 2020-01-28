@@ -3,6 +3,7 @@ node v8.16.2
 npm 6.4.1
 docker 19.03.2
 docker-compose  1.13.0
+Hyperledger images 1.4.4 
 
 <b>Installation :</b><br>
 - Télécharger le repository Github :<br>
