@@ -12,8 +12,6 @@ router.get('/', (req, res, next) => {
 })
 .post('/connexion', async function (req, res) {
    
-
-
     let formData = req.body;
     let sess = req.session
     let type = await connexion.submitForm(formData, sess )

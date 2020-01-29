@@ -2,7 +2,7 @@ const fs = require('fs')
 const FabricCAServices = require('fabric-ca-client')
 const { FileSystemWallet, X509WalletMixin } = require('fabric-network');
 
-const pathFile = __dirname + '/../../crypto-config/peerOrganizations/orga1.trappiste-hunter.com/tlsca/tlsca.orga1.trappiste-hunter.com-cert.pem'
+const pathFile = __dirname + '/../../crypto-config/peerOrganizations/magasin.trappiste.fr/tlsca/tlsca.magasin.trappiste.fr-cert.pem'
 const certificatOrga1DePeers = fs.readFileSync(pathFile, 'utf8')
 
     enrollAdmin = async () => {
@@ -15,7 +15,7 @@ const certificatOrga1DePeers = fs.readFileSync(pathFile, 'utf8')
 
             //CaClient to communicate with the CA
             const url = "https://localhost:7054" // check ca0 docker-compose-cli.yaml
-            const caName = "ca.orga1.trappiste-hunter.com" // check ca0 docker-compose-cli.yaml
+            const caName = "ca.magasin.trappiste.fr" // check ca0 docker-compose-cli.yaml
             const caClient = new FabricCAServices(url, { trustedRoots: certificatOrga1DePeers, verify: false }, caName)
             
            
@@ -28,7 +28,7 @@ const certificatOrga1DePeers = fs.readFileSync(pathFile, 'utf8')
             const enrollment = await caClient.enroll({ enrollmentID: 'admin',
              enrollmentSecret: 'adminpw' // par defaut dans le serveur CA
             })
-            const x509identity = X509WalletMixin.createIdentity('Orga1MSP', enrollment.certificate, enrollment.key.toBytes())
+            const x509identity = X509WalletMixin.createIdentity('MagasinMSP', enrollment.certificate, enrollment.key.toBytes())
             await wallet.import('admin', x509identity)
             console.log('Successfully enrolled admin user "admin" and imported it into the wallet');
             

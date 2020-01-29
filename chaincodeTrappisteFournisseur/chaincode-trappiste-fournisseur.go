@@ -48,7 +48,8 @@ func (tfc *TFContract) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	} else if function == "getByRange" {
 		return tfc.getByRange(stub, args)
 	}
-	return shim.Error("Invalid Trappiste Contract function name.")
+	err :=  "Invalid Trappiste Contract function name, given fct name : "+function
+	return shim.Error(err)
 }
 
 func (tfc *TFContract) putProduit(stub shim.ChaincodeStubInterface, args []string) peer.Response {

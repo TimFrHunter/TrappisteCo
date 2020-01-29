@@ -14,6 +14,10 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim/ext/cid"
 )
 
+const Vendeur = "magasin.vendeur"
+const Responsable = "magasin.responsable"
+const OrganisationMSP = "MagasinMSP"
+
 type Biere struct {
 	Id        string  `json:"id"`
 	Nom       string  `json:"nom"`
@@ -411,11 +415,11 @@ func (tc *TrappisteContract) isAdmin(stub shim.ChaincodeStubInterface) bool {
 }
 
 func (tc *TrappisteContract) isVendeur(stub shim.ChaincodeStubInterface) bool {
-	return tc.checkAffiliation(stub, "Orga1MSP", "magasin.vendeur")
+	return tc.checkAffiliation(stub, OrganisationMSP, Vendeur)
 }
 
 func (tc *TrappisteContract) isResponsable(stub shim.ChaincodeStubInterface) bool {
-	return tc.checkAffiliation(stub, "Orga1MSP", "magasin.responsable")
+	return tc.checkAffiliation(stub, OrganisationMSP, Responsable)
 }
 
 func (tc *TrappisteContract) checkAffiliation(stub shim.ChaincodeStubInterface, _mspId string, _affiliation string) bool {
