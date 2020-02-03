@@ -24,7 +24,7 @@ listerTicketReduction = async (contract, startRange, endRange) => {
  */
 listerProduit = async (contract, startRange, endRange) => {
     let res = await contract.evaluateTransaction("getByRange", startRange, endRange);
-    return res.length == 0 ? true : Buffer.from(res).toString(); 
+    return res.length == 0 ? true : JSON.parse(Buffer.from(res)); 
 }
 
 module.exports = {

@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const indexRouter = require('./routes/index');
 const vendeurRouter = require('./routes/vendeur');
 const responsableRouter = require('./routes/responsable');
+const fournisseurRouter = require('./routes/fournisseur');
 
 
 
@@ -25,6 +26,7 @@ app.listen(3000, function () {
 app.use('/', indexRouter)
 app.use('/vendeur', vendeurRouter)
 app.use('/responsable', responsableRouter)
+app.use('/fournisseur', fournisseurRouter)
 
 
 

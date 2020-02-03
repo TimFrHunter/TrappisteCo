@@ -1,5 +1,5 @@
 const { FileSystemWallet, Gateway, X509WalletMixin } = require('fabric-network');
-const connexionOrga1InfoFile = __dirname + '/../connection-orga1.json';
+const connexionOrga1InfoFile = __dirname + '/../connection-magasin.json';
 
 registerResponsable = async () => {
     try{

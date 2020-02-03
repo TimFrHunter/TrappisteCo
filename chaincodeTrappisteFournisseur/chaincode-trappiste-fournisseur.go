@@ -20,10 +20,9 @@ type Commande struct {
 	PrixTotal    float32 `json:"consigne"`
 }
 
-/**
-**/
 type Produit struct {
 	Id              string              `json:"id"`
+	CodeBarre       string              `json:"codebarre"`
 	BiereNom        string              `json:"bierenom"`
 	PrixParQuantite map[int]interface{} `json:"prixparquantite"` // [1] = 2.3 // [100] = 2.1 // [200] = 1.9
 }
@@ -48,22 +47,23 @@ func (tfc *TFContract) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	} else if function == "getByRange" {
 		return tfc.getByRange(stub, args)
 	}
-	err :=  "Invalid Trappiste Contract function name, given fct name : "+function
+	err := "Invalid Trappiste Contract function name, given fct name : " + function
 	return shim.Error(err)
 }
 
 func (tfc *TFContract) putProduit(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 
 	var id string = args[0]
-	var biereNom string = args[1]
+	var codebarre string = args[1]
+	var biereNom string = args[2]
 	var prixParQuantite map[int]interface{}
 
-	err := json.Unmarshal([]byte(args[2]), &prixParQuantite) //"{\"1\" : \"2.3\", \"100\" : \"2.1\"}" etc..
+	err := json.Unmarshal([]byte(args[3]), &prixParQuantite) //"{\"1\" : \"2.3\", \"100\" : \"2.1\"}" etc..
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	produitStruct := Produit{id, biereNom, prixParQuantite} // hydate struct avec args
+	produitStruct := Produit{id, codebarre, biereNom, prixParQuantite} // hydate struct avec args
 
 	produitAsByte, err := json.Marshal(produitStruct) //encode
 	if err != nil {

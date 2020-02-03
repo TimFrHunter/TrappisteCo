@@ -22,6 +22,12 @@ function up () {
     fabric-ca-client affiliation add magasin.responsable 
     fabric-ca-client affiliation add magasin.vendeur
     "
+    
+    docker exec ca.chimay.fournisseur.be bash -c " \
+    fabric-ca-client enroll -u https://admin:adminpw@ca.chimay.fournisseur.be:1054
+    fabric-ca-client affiliation add fournisseur 
+    fabric-ca-client affiliation add fournisseur.chimay 
+    "
     docker exec cli /tmp/scripts/doConfig.sh
 
     
@@ -38,6 +44,9 @@ function up () {
     
     node app/exec/enrollAdmin.js
     node app/exec/registerUser.js
+
+    node app/exec/enrollAdminChimay.js
+    node app/exec/registerUserChimay.js
  
     node app/exec/appUsers.js
     node app/exec/appStock.js

@@ -144,12 +144,12 @@ $(document).ready(function(){
         $infoError.addClass("d-none")
         let prix = 0;
         $(document).find("#tableCaisse tbody tr").each(() => {
-          prix += parseFloat($(this).find("td:nth-child(5)").html()).toFixed(2)
+          
+          prix += parseFloat($(this).find("td:nth-child(5)").html())
         })
         prix -= parseFloat(data.prixReduc)
-        
+       
         if(parseFloat(data.prixReduc) != reductionPrix){
-
           reductionPrix = parseFloat(data.prixReduc)
         }
         $("#cardCaisse #totalPrix").val(prix.toFixed(2)+ "€")
