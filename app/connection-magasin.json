@@ -1,0 +1,61 @@
+{
+    "name": "magasin-trappiste",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Magasin",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Magasin": {
+            "mspid": "MagasinMSP",
+            "peers": [
+                "peer0.magasin.trappiste.fr",
+                "peer1.magasin.trappiste.fr"
+            ],
+            "certificateAuthorities": [
+                "ca.magasin.trappiste.fr"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.magasin.trappiste.fr": {
+            "url": "grpcs://localhost:7051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICZzCCAg6gAwIBAgIRANBan32Zje5AAjaB/NAu1G0wCgYIKoZIzj0EAwIwfjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xHTAbBgNVBAoTFG1hZ2FzaW4udHJhcHBpc3RlLmZyMSMwIQYDVQQD\nExp0bHNjYS5tYWdhc2luLnRyYXBwaXN0ZS5mcjAeFw0yMDAxMjkyMTU0MDBaFw0z\nMDAxMjYyMTU0MDBaMH4xCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlh\nMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMR0wGwYDVQQKExRtYWdhc2luLnRyYXBw\naXN0ZS5mcjEjMCEGA1UEAxMadGxzY2EubWFnYXNpbi50cmFwcGlzdGUuZnIwWTAT\nBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQAW/RuVlawT8A80vtW64wybVNeP/UY+thg\nzPnrrA8jVLrfuCA6YucdbjKipKZ+XJOAwQ7Lm54njsaTxVmXdDCXo20wazAOBgNV\nHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1Ud\nEwEB/wQFMAMBAf8wKQYDVR0OBCIEIEcG9SZtjxdE83hjRK3ndgOv+X+0iESQgv+d\nBYGI18gPMAoGCCqGSM49BAMCA0cAMEQCIHQ/S4G327ymL2ksKLWH120mqd4HqOnJ\nSwBz+gvHecfYAiAkaJ0f0jOJj6UTDh/KN+oLo/goN8VtKyzAlrTUDzMmow==\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.magasin.trappiste.fr",
+                "hostnameOverride": "peer0.magasin.trappiste.fr"
+            }
+        },
+        "peer1.magasin.trappiste.fr": {
+            "url": "grpcs://localhost:7061",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICZzCCAg6gAwIBAgIRANBan32Zje5AAjaB/NAu1G0wCgYIKoZIzj0EAwIwfjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xHTAbBgNVBAoTFG1hZ2FzaW4udHJhcHBpc3RlLmZyMSMwIQYDVQQD\nExp0bHNjYS5tYWdhc2luLnRyYXBwaXN0ZS5mcjAeFw0yMDAxMjkyMTU0MDBaFw0z\nMDAxMjYyMTU0MDBaMH4xCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlh\nMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMR0wGwYDVQQKExRtYWdhc2luLnRyYXBw\naXN0ZS5mcjEjMCEGA1UEAxMadGxzY2EubWFnYXNpbi50cmFwcGlzdGUuZnIwWTAT\nBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQAW/RuVlawT8A80vtW64wybVNeP/UY+thg\nzPnrrA8jVLrfuCA6YucdbjKipKZ+XJOAwQ7Lm54njsaTxVmXdDCXo20wazAOBgNV\nHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1Ud\nEwEB/wQFMAMBAf8wKQYDVR0OBCIEIEcG9SZtjxdE83hjRK3ndgOv+X+0iESQgv+d\nBYGI18gPMAoGCCqGSM49BAMCA0cAMEQCIHQ/S4G327ymL2ksKLWH120mqd4HqOnJ\nSwBz+gvHecfYAiAkaJ0f0jOJj6UTDh/KN+oLo/goN8VtKyzAlrTUDzMmow==\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.magasin.trappiste.fr",
+                "hostnameOverride": "peer1.magasin.trappiste.fr"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.magasin.trappiste.fr": {
+            "url": "https://localhost:7054",
+            "caName": "ca.magasin.trappiste.fr",
+            "tlsCACerts": { 
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICYjCCAgigAwIBAgIRANiK21SJpiUkqSUTUG5y3BswCgYIKoZIzj0EAwIwezEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xHTAbBgNVBAoTFG1hZ2FzaW4udHJhcHBpc3RlLmZyMSAwHgYDVQQD\nExdjYS5tYWdhc2luLnRyYXBwaXN0ZS5mcjAeFw0yMDAxMjkyMTU0MDBaFw0zMDAx\nMjYyMTU0MDBaMHsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYw\nFAYDVQQHEw1TYW4gRnJhbmNpc2NvMR0wGwYDVQQKExRtYWdhc2luLnRyYXBwaXN0\nZS5mcjEgMB4GA1UEAxMXY2EubWFnYXNpbi50cmFwcGlzdGUuZnIwWTATBgcqhkjO\nPQIBBggqhkjOPQMBBwNCAARmQcRj8GovgS8SiT+C95wwzEM5XFeYHltpVqc+BUd4\ntAUSDW0HzGRTNikGU75Srg7/QnVg6i+XUaK5wx1hx4umo20wazAOBgNVHQ8BAf8E\nBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQF\nMAMBAf8wKQYDVR0OBCIEIH2I5hTAhUzZb+UYUmZLMWzCd6+urYCAO6zTEPB+kZw8\nMAoGCCqGSM49BAMCA0gAMEUCIQDq5ZZO+cXyyslGfDWoCex6uIwENNdVc11hI4A6\nszK8lwIgMaUH1S9hMn5HgFEcwG3wlHgR99RQPXJ6JNPzSnTYaSw=\n-----END CERTIFICATE-----\n",
+                "_comment" : "Ceci est un commentaire le chemin du .pem ci-dessus: c le CA normal pas le TLS crypto-config/peerOrganizations/orga1.trap../ca/ca.orga....pem"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

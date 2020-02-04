@@ -1,5 +1,5 @@
 const { FileSystemWallet, Gateway, X509WalletMixin } = require('fabric-network');
-const connexionOrga1InfoFile = __dirname + '/../connection-orga1.json';
+const connexionOrga1InfoFile = __dirname + '/../connection-magasin.json';
 
 registerResponsable = async () => {
     try{
@@ -32,7 +32,7 @@ registerResponsable = async () => {
             affiliation: 'magasin.responsable' // par defaut dans le serveur CA //c'est le EnableOUs  Organization Unit créé des sous groupes qui sont rattachés un utilisteur avec son role
         , enrollmentID: 'responsable', role: 'client'}, adminIdentity)
         const enrollment = await ca.enroll({ enrollmentID: 'responsable', enrollmentSecret: secret})
-        const userIdentity = X509WalletMixin.createIdentity('Orga1MSP', enrollment.certificate, enrollment.key.toBytes())
+        const userIdentity = X509WalletMixin.createIdentity('MagasinMSP', enrollment.certificate, enrollment.key.toBytes())
         await wallet.import('responsable', userIdentity)
         console.log('Successfully registered and enrolled by admin,  user : "responsable" and imported it into the wallet');
 
@@ -77,7 +77,7 @@ registerVendeur = async () => {
             affiliation: 'magasin.vendeur' // par defaut dans le serveur CA //c'est le EnableOUs  Organization Unit créé des sous groupes qui sont rattachés un utilisteur avec son role
         , enrollmentID: 'vendeur', role: 'client'}, adminIdentity)
         const enrollment = await ca.enroll({ enrollmentID: 'vendeur', enrollmentSecret: secret})
-        const userIdentity = X509WalletMixin.createIdentity('Orga1MSP', enrollment.certificate, enrollment.key.toBytes())
+        const userIdentity = X509WalletMixin.createIdentity('MagasinMSP', enrollment.certificate, enrollment.key.toBytes())
         await wallet.import('vendeur', userIdentity)
         console.log('Successfully registered and enrolled by admin,  user : "vendeur" and imported it into the wallet');
 

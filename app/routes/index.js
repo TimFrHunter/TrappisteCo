@@ -12,13 +12,12 @@ router.get('/', (req, res, next) => {
 })
 .post('/connexion', async function (req, res) {
    
-
-
     let formData = req.body;
     let sess = req.session
     let type = await connexion.submitForm(formData, sess )
     if(type == 'responsable') return res.redirect('/responsable/stock')
     else if(type == 'vendeur') return res.redirect('/vendeur/caisse')
+    else if(type == 'fournisseur') return res.redirect('/fournisseur/produits')
     else if (type == 'tokenFalse'){
         return res.redirect(url.format({
             pathname:"/",

@@ -1,0 +1,61 @@
+{
+    "name": "fournisseur-chimay",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Chimay",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Chimay": {
+            "mspid": "ChimayMSP",
+            "peers": [
+                "peer0.chimay.fournisseur.be",
+                "peer1.chimay.fournisseur.be"
+            ],
+            "certificateAuthorities": [
+                "ca.chimay.fournisseur.be"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.chimay.fournisseur.be": {
+            "url": "grpcs://localhost:1001",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICbTCCAhOgAwIBAgIQUuGWV7sVucByv++h3elboTAKBggqhkjOPQQDAjCBgDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xHjAcBgNVBAoTFWNoaW1heS5mb3Vybmlzc2V1ci5iZTEkMCIGA1UE\nAxMbdGxzY2EuY2hpbWF5LmZvdXJuaXNzZXVyLmJlMB4XDTIwMDEyOTIxNTQwMFoX\nDTMwMDEyNjIxNTQwMFowgYAxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9y\nbmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMR4wHAYDVQQKExVjaGltYXkuZm91\ncm5pc3NldXIuYmUxJDAiBgNVBAMTG3Rsc2NhLmNoaW1heS5mb3Vybmlzc2V1ci5i\nZTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEZZqgI/DdcuOsBLi0XFhLareKk8\n+JlhhvNjDWyNVFt8lRU72Jw1A5r25N55ZJaQzRrtdfaCqBHN7duCLIghAyyjbTBr\nMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEw\nDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgLxGYRkgXT4t5fmNn4ZuBeQfZ1djA\nHRO0hV1TUkibJkUwCgYIKoZIzj0EAwIDSAAwRQIhANEExDKrFAGr1+FK/wuHxdu0\n7r2Haa5KgmzpNxbl0304AiBn/MvwitPCad/YyVDGxpvvBdgFAzRWAKvK6we8vPWK\n2g==\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.chimay.fournisseur.be",
+                "hostnameOverride": "peer0.chimay.fournisseur.be"
+            }
+        },
+        "peer1.chimay.fournisseur.be": {
+            "url": "grpcs://localhost:1011",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICbTCCAhOgAwIBAgIQUuGWV7sVucByv++h3elboTAKBggqhkjOPQQDAjCBgDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xHjAcBgNVBAoTFWNoaW1heS5mb3Vybmlzc2V1ci5iZTEkMCIGA1UE\nAxMbdGxzY2EuY2hpbWF5LmZvdXJuaXNzZXVyLmJlMB4XDTIwMDEyOTIxNTQwMFoX\nDTMwMDEyNjIxNTQwMFowgYAxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9y\nbmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMR4wHAYDVQQKExVjaGltYXkuZm91\ncm5pc3NldXIuYmUxJDAiBgNVBAMTG3Rsc2NhLmNoaW1heS5mb3Vybmlzc2V1ci5i\nZTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEZZqgI/DdcuOsBLi0XFhLareKk8\n+JlhhvNjDWyNVFt8lRU72Jw1A5r25N55ZJaQzRrtdfaCqBHN7duCLIghAyyjbTBr\nMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEw\nDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgLxGYRkgXT4t5fmNn4ZuBeQfZ1djA\nHRO0hV1TUkibJkUwCgYIKoZIzj0EAwIDSAAwRQIhANEExDKrFAGr1+FK/wuHxdu0\n7r2Haa5KgmzpNxbl0304AiBn/MvwitPCad/YyVDGxpvvBdgFAzRWAKvK6we8vPWK\n2g==\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.chimay.fournisseur.be",
+                "hostnameOverride": "peer1.chimay.fournisseur.be"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.chimay.fournisseur.be": {
+            "url": "https://localhost:1054",
+            "caName": "ca.chimay.fournisseur.be",
+            "tlsCACerts": { 
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICZTCCAgygAwIBAgIRAO/MWvPjsHx3tLMZkqYOluswCgYIKoZIzj0EAwIwfTEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xHjAcBgNVBAoTFWNoaW1heS5mb3Vybmlzc2V1ci5iZTEhMB8GA1UE\nAxMYY2EuY2hpbWF5LmZvdXJuaXNzZXVyLmJlMB4XDTIwMDEyOTIxNTQwMFoXDTMw\nMDEyNjIxNTQwMFowfTELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWEx\nFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xHjAcBgNVBAoTFWNoaW1heS5mb3Vybmlz\nc2V1ci5iZTEhMB8GA1UEAxMYY2EuY2hpbWF5LmZvdXJuaXNzZXVyLmJlMFkwEwYH\nKoZIzj0CAQYIKoZIzj0DAQcDQgAEHii4SvGMpOTGHyZjp6gp6lpikQgeP7KKumVg\neUtkJzGPkbYx0fv5/lYRYNKvbUtabpxd+LS1SaLZQ6HjKrumbaNtMGswDgYDVR0P\nAQH/BAQDAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMB\nAf8EBTADAQH/MCkGA1UdDgQiBCBN7grBnpiQQFyY2Wit5/g+Nq2+uapLw75nuTiv\neD5YoTAKBggqhkjOPQQDAgNHADBEAiA/aGIkvezX8Bnqdg4v/HFg3h0yF8r8k6ve\nnLvPTmKiogIgaoUwqBvZ/7DP5azGm4KZ5IsEqIonNJEEYpTpuUIT1Mo=\n-----END CERTIFICATE-----\n",
+                "_comment" : "Ceci est un commentaire le chemin du .pem ci-dessus: c le CA normal pas le TLS crypto-config/peerOrganizations/orga1.trap../ca/ca.orga....pem"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

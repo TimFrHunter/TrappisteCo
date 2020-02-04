@@ -13,15 +13,26 @@ function down() {
 }
 
 function up () {
-    down
+    #down
     docker-compose -f docker-compose-cli.yaml up -d 2>&1
-    docker exec ca.orga1.trappiste-hunter.com bash -c " \
-    fabric-ca-client enroll -u https://admin:adminpw@ca.orga1.trappiste-hunter.com:7054
+    
+    docker exec ca.magasin.trappiste.fr bash -c " \
+    fabric-ca-client enroll -u https://admin:adminpw@ca.magasin.trappiste.fr:7054
     fabric-ca-client affiliation add magasin 
     fabric-ca-client affiliation add magasin.responsable 
     fabric-ca-client affiliation add magasin.vendeur
     "
+    
+    docker exec ca.chimay.fournisseur.be bash -c " \
+    fabric-ca-client enroll -u https://admin:adminpw@ca.chimay.fournisseur.be:1054
+    fabric-ca-client affiliation add fournisseur 
+    fabric-ca-client affiliation add fournisseur.chimay 
+    "
     docker exec cli /tmp/scripts/doConfig.sh
+
+    
+
+
 #     docker exec cli  bash -c "peer chaincode invoke -o orderer0.trappiste-hunter.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trappiste-hunter.com/orderers/orderer0.trappiste-hunter.com/msp/tlscacerts/tlsca.trappiste-hunter.com-cert.pem  -C channel-magasin -n chainecode-trappiste \
 #      -c '{\"Args\":[\"incrementerStock\", \"Biere0\",\"Chimay Bleu\",\"200\", \"123456786\", \"0.18\", \"2.1\"]}' "
 #     sleep 5
@@ -33,17 +44,14 @@ function up () {
     
     node app/exec/enrollAdmin.js
     node app/exec/registerUser.js
+
+    node app/exec/enrollAdminChimay.js
+    node app/exec/registerUserChimay.js
  
     node app/exec/appUsers.js
     node app/exec/appStock.js
     node app/exec/appTdr.js
     
-    docker exec cli bash -c " \
-    printf '\n'
-    peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"listerBiere\",\"Biere\",\"Biere~\"]}'
-    printf '\n'
-    peer chaincode query -C channel-magasin -n chainecode-trappiste -c '{\"Args\":[\"listerVente\",\"Vente\",\"Vente~\"]}'
-    "
 
     docker ps
    

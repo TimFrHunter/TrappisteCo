@@ -10,6 +10,11 @@ const autre = require('../modeles/autre')
 
 
 
+const channelMagasin = 'channel-magasin'
+const ccMagasin = 'chaincode-trappiste'
+const connectionProfile = __dirname + '/../connection-magasin.json'
+const walletPath = __dirname + '/../wallet'
+
 
 router.get('/caisse', async (req, res) => {
     role = req.session.role == undefined ? '' : req.session.role 
@@ -29,7 +34,8 @@ router.get('/caisse', async (req, res) => {
             let datas = req.body
             let idBiere = await levelDB.correspondanceDB.get(datas.barcode)
             let idBiereEnd = parseInt(idBiere.replace("Biere",''),10) +1
-            let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
+            
+            let contrat = await contract.init(walletPath, role, connectionProfile, channelMagasin, ccMagasin) 
             let bieresStock = await lister.listerBiere(contrat, idBiere, "Biere" + idBiereEnd)
             await contrat.gateway.disconnect();
             return res.send({ 'barcodeExist' : true, 'bieresStock' : bieresStock})
@@ -47,7 +53,7 @@ router.get('/caisse', async (req, res) => {
             let datas = req.body
             let idTdr = await levelDB.correspondanceTdrDB.get(datas.barcode)
             let idTdrEnd = parseInt(idTdr.replace("TicketReduction",''),10) +1
-            let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
+            let contrat = await contract.init(walletPath, role, connectionProfile, channelMagasin, ccMagasin) 
             let tdr = await lister.listerTicketReduction(contrat, idTdr,"TicketReduction" + idTdrEnd)
             let reducPrix = tdr[0].Record.isenabled == true ? tdr[0].Record.reductionprix : 0
             await contrat.gateway.disconnect();
@@ -68,7 +74,7 @@ router.get('/caisse', async (req, res) => {
         return res.redirect('/')
 
     try{
-        let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
+        let contrat = await contract.init(walletPath, role, connectionProfile, channelMagasin, ccMagasin) 
         
         let els = req.body
         let vente =''
@@ -113,7 +119,7 @@ router.get('/caisse', async (req, res) => {
     if(role != "vendeur" ) 
         return res.redirect('/')
     try{    
-        let contrat = await contract.init(__dirname + '/../wallet', role, __dirname + '/../connection-orga1.json', 'channel-magasin','chainecode-trappiste') 
+        let contrat = await contract.init(walletPath, role, connectionProfile, channelMagasin, ccMagasin) 
         let els = req.body
         let prix = 0
         for(let el of els.commande) {
