@@ -53,7 +53,9 @@
       </form>
     </div> 
   </body>
-</html>
+
+  <%- include('../../gadget/loader') %> 
+
 
 <script type="text/javascript">
 
@@ -89,16 +91,19 @@
 
     $("form").submit(function(e) {
       e.preventDefault()
+      $("#loader").show()
       let datas = $(this).serializeArray()
       $.post("/responsable/commande/valider",datas,(response) => {
         // if(!response.status){
         //   $infoError.html(response.message)
         //   $infoError.removeClass("d-none")
         // }else{
-        //   window.location.replace("/responsable/stock")
+          window.location.replace("/responsable/stock")
+          $("#loader").hide()
         // }
       })
     })
   })
 
 </script>  
+</html>

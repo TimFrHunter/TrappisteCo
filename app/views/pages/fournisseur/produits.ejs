@@ -34,7 +34,7 @@
                 <th class="text-center" data-priceUnit=<%- q %> >prix unitaire : x<%= q %></th>
               <% }) %>
               <th class="text-center" style="position:relative">
-                <i class="addUnitaire material-icons" style="position:absolute;top:1em;left:0.5em;cursor:pointer" >exposure_plus_1</i>
+                <i class="addUnitaire btn btn-light" style="margin-top:-5.5em;cursor:pointer;font-style:normal" >+1</i>
                 <span class="actions">Actions</span>
               </th>
             </tr>
@@ -109,6 +109,30 @@
         let $lastTh = $table.find("thead th:last-child")
         $lastTh.find(".actions").show()
         $lastTh.find(".addUnitaire").hide()
+        //-------------------------//
+        let datas = []
+        let headers = []
+        let jsonstring = '{'
+        $table.find("thead tr th:not(:first-child,:nth-child(2),:nth-child(3),:last-child)").each(function(){
+              let content = $(this).html()
+              content = content.substr(content.indexOf(':')+3)
+              headers.push(content)
+            })
+        $table.find("tbody tr td:not(:last-child)").each(function(idx){
+          if(idx >= 3){
+            if(idx > 3){
+              jsonstring += ','
+            }
+            jsonstring += '\"'+ headers[idx-3] +'\":\"'+ $(this).html().replace('€','') +'\"'
+          }else
+            datas.push($(this).html())
+        })
+        jsonstring += '}'
+        datas.push(jsonstring)
+        console.log(datas)
+        $.post('produits/valider', {'datas' : datas}, function(){
+
+        })
         //get elements
         //send Elements $POST
     }).on("click", ".deleteUnitaire i",function(){
@@ -132,7 +156,7 @@
               +'<th class="text-center">Produit</th>'
               +' <th class="text-center">'+inputBasic + deleteUnitaireBasic +'</th>'
               +' <th class="text-center" style="position:relative">'
-                +'<i class="addUnitaire material-icons" style="position:absolute;top:1em;left:0.5em;cursor:pointer" >exposure_plus_1</i>'
+                +'<i class="addUnitaire btn btn-light" style="margin-top:-5.5em;cursor:pointer;font-style:normal" >+1</i>'
                 +'<span class="actions" style="display:none;">Actions</span>'
               +'</th>'
               +'</tr>'

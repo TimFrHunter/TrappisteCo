@@ -73,9 +73,12 @@ router.get('/consigne', async (req, res) => {
         return res.redirect('/')
     let datas = req.body
     let key = datas.key
+    let codebarre = datas.codebarre
     //let type = datas.type
     //global[type](key)
     let contrat = await contract.init(walletPath, role, connectionProfile, channelMagasin, ccMagasin) 
+    
+    await levelDB.correspondanceDB.del(codebarre)
     await autre.deleteByKey(contrat, key)
     await contrat.gateway.disconnect();
     return res.sendStatus(200)

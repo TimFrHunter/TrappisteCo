@@ -126,7 +126,8 @@
     $(document).on("click", ".delete", function(){
           $(document).find(".tooltip.fade.bs-tooltip-top.show, .tooltip.bs-tooltip-top.show").remove();
           let key = $(this).parents("tr").find("td:first-child").html()
-          $.post("/responsable/delete", {'type' : 'deleteByKey' ,'key' : key}, function(  ) {});
+          let codebarre = $(this).parents("tr").find("td:nth-child(4)").html()
+          $.post("/responsable/delete", {'type' : 'deleteByKey' ,'key' : key, 'codebarre' : codebarre}, function(  ) {});
           $(this).parents("tr").remove();
       $(".add-new").removeAttr("disabled");
       });

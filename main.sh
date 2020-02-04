@@ -14,7 +14,7 @@ function down() {
 
 function up () {
     #down
-   # docker-compose -f docker-compose-cli.yaml up -d 2>&1
+    docker-compose -f docker-compose-cli.yaml up -d 2>&1
     
     docker exec ca.magasin.trappiste.fr bash -c " \
     fabric-ca-client enroll -u https://admin:adminpw@ca.magasin.trappiste.fr:7054
