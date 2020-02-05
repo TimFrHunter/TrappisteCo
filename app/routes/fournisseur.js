@@ -23,9 +23,19 @@ router.get("/produits", async(req, res) => {
     return res.render('fournisseur/produits', {'produits' : produits, "role" : role})
 }).post("/produits/valider", async(req, res) => {
     let infos = req.body   
+    role = req.session.role == undefined ? '' : req.session.role 
     let contrat = await contract.init(walletPath, role, connectionProfile, channelMagasinChimay, ccMagasinFournisseur) 
-    await updateFournisseur.updateProduit(contrat, ...infos.datas)
-    await contrat.gateway.disconnect()
+    console.log(infos.datas)
+    try{
+        await updateFournisseur.updateProduit(contrat, ...infos.datas)
+    }catch(e){
+        console.log("ici", e)
+    }
+    try{
+        await contrat.gateway.disconnect()
+    }catch(e){
+        console.log("okiii",e)
+    }
     return res.send({'status' : 'true'})
 });
 
